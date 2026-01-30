@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\{Page, BlockText, BlockImage};
+use App\Entity\Page;
 use App\Factory\BlockFactory;
 use App\Service\PositionManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,8 +14,9 @@ class AppFixtures extends Fixture
     public function __construct(
         private BlockFactory $blockFactory,
         private PositionManager $positionManager,
-        private SluggerInterface $slugger
-    ) {}
+        private SluggerInterface $slugger,
+    ) {
+    }
 
     public function load(ObjectManager $em): void
     {
@@ -71,10 +72,11 @@ class AppFixtures extends Fixture
     {
         $slugs = [];
         $current = $page;
-        while ($current !== null) {
+        while (null !== $current) {
             array_unshift($slugs, $current->getSlug());
             $current = $current->getParent();
         }
+
         return implode('/', $slugs);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Page;
 use App\Entity\BlockText;
+use App\Entity\Page;
 use App\Tests\BaseWebTestCase;
 
 class PageControllerTest extends BaseWebTestCase
@@ -19,7 +19,6 @@ class PageControllerTest extends BaseWebTestCase
         $block->setContent('Contenu de test');
         $block->setPage($page);
         $block->setPosition(1);
-
 
         $this->em->persist($page);
         $this->em->persist($block);

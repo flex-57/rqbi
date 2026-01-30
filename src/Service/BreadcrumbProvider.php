@@ -8,8 +8,8 @@ class BreadcrumbProvider
 {
     /**
      * Génère les données du breadcrumb pour une page
-     * Retourne un tableau de ['title' => ..., 'url' => ...]
-     * @param Page|null $page
+     * Retourne un tableau de ['title' => ..., 'url' => ...].
+     *
      * @return array<int, array{title: string, url: string, is_current: bool}>
      */
     public function generateBreadcrumbData(?Page $page): array
@@ -23,9 +23,9 @@ class BreadcrumbProvider
 
         foreach ($ancestors as $ancestor) {
             $breadcrumbs[] = [
-                'title' => $ancestor->getTitle(),
+                'title' => (string) $ancestor->getTitle(),
                 'url' => $this->generateUrlForPage($ancestor),
-                'is_current' => $ancestor === $page
+                'is_current' => $ancestor === $page,
             ];
         }
 
@@ -35,6 +35,6 @@ class BreadcrumbProvider
     private function generateUrlForPage(Page $page): string
     {
         // Utiliser le slug complet pour les URLs
-        return '/' . $page->getFullSlug();
+        return '/'.$page->getFullSlug();
     }
 }

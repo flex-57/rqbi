@@ -2,17 +2,19 @@
 
 namespace App\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use App\Entity\Block;
 use App\Entity\Page;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class PositionManager
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+    }
 
     /**
-     * @param class-string $entityClass
+     * @param class-string         $entityClass
      * @param array<string, mixed> $criteria
      */
     public function getNextPosition(string $entityClass, array $criteria = []): int
@@ -31,14 +33,14 @@ class PositionManager
 
     /**
      * @param EntityRepository<object> $repository
-     * @param array<string, mixed> $criteria
+     * @param array<string, mixed>     $criteria
      */
     public function reorderPositions(EntityRepository $repository, array $criteria = []): void
     {
         $entities = $repository->findBy($criteria, ['position' => 'ASC']);
 
         foreach ($entities as $index => $entity) {
-            /** @var Block|Page $entity */
+            /* @var Block|Page $entity */
             $entity->setPosition($index + 1);
         }
 

@@ -9,8 +9,9 @@ class SlugService
 {
     public function __construct(
         private PageRepository $pageRepository,
-        private SluggerInterface $slugger
-    ) {}
+        private SluggerInterface $slugger,
+    ) {
+    }
 
     public function generateUniqueSlug(string $title): string
     {
@@ -32,7 +33,7 @@ class SlugService
 
         $counter = 1;
         do {
-            $slug = $baseSlug . '-' . $counter++;
+            $slug = $baseSlug.'-'.$counter++;
         } while (in_array($slug, $existingSlugs, true));
 
         return $slug;

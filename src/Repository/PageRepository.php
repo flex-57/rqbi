@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class PageRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $registry,
     ) {
         parent::__construct($registry, Page::class);
     }
@@ -40,7 +40,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('false', false)
             ->setParameter('true', true);
 
-        if ($excludePage !== null) {
+        if (null !== $excludePage) {
             $qb->andWhere('p != :exclude')
                ->setParameter('exclude', $excludePage);
         }
@@ -84,7 +84,7 @@ class PageRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->select('p.slug')
             ->where('p.slug LIKE :prefix')
-            ->setParameter('prefix', $prefix . '%')
+            ->setParameter('prefix', $prefix.'%')
             ->getQuery()
             ->getSingleColumnResult();
     }

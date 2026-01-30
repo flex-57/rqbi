@@ -26,7 +26,7 @@ class BlockVideoType extends AbstractType
             ->add('format', EnumType::class, [
                 'label' => 'Format',
                 'class' => VideoFormatEnum::class,
-                'choice_label' => fn(VideoFormatEnum $format) => $format->value,
+                'choice_label' => fn (VideoFormatEnum $format) => $format->value,
             ])
             ->add('isAutoplay', CheckboxType::class, [
                 'label' => 'Lecture automatique',
@@ -42,7 +42,7 @@ class BlockVideoType extends AbstractType
             'data_class' => BlockVideo::class,
             'csrf_protection' => true,
             'csrf_field_name' => 'block_video_token',
-            'csrf_token_id'   => 'block_video_csrf',
+            'csrf_token_id' => 'block_video_csrf',
         ]);
     }
 }

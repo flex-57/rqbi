@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\{BlockText, BlockImage, BlockSlider, BlockVideo};
+use App\Entity\BlockImage;
+use App\Entity\BlockSlider;
+use App\Entity\BlockText;
+use App\Entity\BlockVideo;
 use App\Entity\Enums\BlockTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,8 +22,8 @@ class BlockDynamicType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'label' => 'Type de bloc',
                 'choices' => BlockTypeEnum::cases(),
-                'choice_label' => fn(BlockTypeEnum $type) => ucfirst($type->value),
-                'choice_value' => static fn(?BlockTypeEnum $type) => $type?->value,
+                'choice_label' => fn (BlockTypeEnum $type) => ucfirst($type->value),
+                'choice_value' => static fn (?BlockTypeEnum $type) => $type?->value,
                 'mapped' => false,
                 'attr' => ['data-action' => 'change->form#updateBlockForm'],
             ])

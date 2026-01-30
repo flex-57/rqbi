@@ -18,7 +18,6 @@ abstract class BlockRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Page $page
      * @return Block[]
      */
     public function findByPageOrdered(Page $page): array

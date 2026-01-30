@@ -10,10 +10,10 @@ use App\Factory\BlockFactory;
 use App\Repository\PageRepository;
 use App\Service\PositionManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Base test class providing common test helpers and bootstrapping for functional tests.
@@ -73,6 +73,7 @@ class BaseWebTestCase extends WebTestCase
 
     /**
      * Create and persist a Page.
+     *
      * @param array<string, mixed> $data
      */
     protected function createPage(array $data = []): Page
@@ -94,13 +95,14 @@ class BaseWebTestCase extends WebTestCase
     }
 
     /**
-     * Create and persist a Block of a given type (text, image, video) for a page
+     * Create and persist a Block of a given type (text, image, video) for a page.
+     *
      * @param array<string, mixed> $data
      */
     protected function createBlock(Page $page, string $type = 'text', array $data = []): Block
     {
         // 1. Récupère les services une fois
-        /** @var BlockFactory $factory  */
+        /** @var BlockFactory $factory */
         $factory = static::getContainer()->get(BlockFactory::class);
         $positionManager = static::getContainer()->get(PositionManager::class);
 

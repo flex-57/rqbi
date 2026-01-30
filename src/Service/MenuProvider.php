@@ -3,15 +3,16 @@
 namespace App\Service;
 
 use App\Repository\PageRepository;
-use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class MenuProvider
 {
     public function __construct(
         private PageRepository $pageRepository,
-        private TagAwareCacheInterface $cache
-    ) {}
+        private TagAwareCacheInterface $cache,
+    ) {
+    }
 
     /**
      * Retourne le menu structuré avec les fullSlugs
@@ -35,7 +36,8 @@ class MenuProvider
      *       ]
      *     ]
      *   ]
-     * ]
+     * ].
+     *
      * @return array<int, array{
      *      title: string, slug: string, fullSlug: string, menuGroups: array<int, array{
      *          title: string, slug: string, fullSlug: string, menuItems: array<int, array{
@@ -46,7 +48,7 @@ class MenuProvider
      */
     public function getFullMenu(): array
     {
-        return $this->cache->get('full_menu', function(ItemInterface $item) {
+        return $this->cache->get('full_menu', function (ItemInterface $item) {
             $item->expiresAfter(3600);
             $item->tag(['cache_full_menu']);
 
@@ -56,27 +58,27 @@ class MenuProvider
             // Niveau 1 (root)
             foreach ($rootPages as $rootPage) {
                 $section = [
-                    'title' => $rootPage->getTitle(),
-                    'slug' => $rootPage->getSlug(),
-                    'fullSlug' => $rootPage->getFullSlug(),
-                    'menuGroups' => []
+                    'title' => (string) $rootPage->getTitle(),
+                    'slug' => (string) $rootPage->getSlug(),
+                    'fullSlug' => (string) $rootPage->getFullSlug(),
+                    'menuGroups' => [],
                 ];
 
                 // Niveau 2
                 foreach ($rootPage->getChildren() as $groupPage) {
                     $group = [
-                        'title' => $groupPage->getTitle(),
-                        'slug' => $groupPage->getSlug(),
-                        'fullSlug' => $groupPage->getFullSlug(),
-                        'menuItems' => []
+                        'title' => (string) $groupPage->getTitle(),
+                        'slug' => (string) $groupPage->getSlug(),
+                        'fullSlug' => (string) $groupPage->getFullSlug(),
+                        'menuItems' => [],
                     ];
 
                     // Niveau 3
                     foreach ($groupPage->getChildren() as $itemPage) {
                         $group['menuItems'][] = [
-                            'title' => $itemPage->getTitle(),
-                            'slug' => $itemPage->getSlug(),
-                            'fullSlug' => $itemPage->getFullSlug()
+                            'title' => (string) $itemPage->getTitle(),
+                            'slug' => (string) $itemPage->getSlug(),
+                            'fullSlug' => (string) $itemPage->getFullSlug(),
                         ];
                     }
 

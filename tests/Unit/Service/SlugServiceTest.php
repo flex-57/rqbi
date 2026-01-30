@@ -11,7 +11,7 @@ class SlugServiceTest extends TestCase
 {
     public function testGenerateUniqueSlug(): void
     {
-        $mockRepo = $this->createMock(PageRepository::class);
+        $mockRepo = $this->createStub(PageRepository::class);
         $mockRepo->method('findSlugsStartingWith')
             ->willReturn(['test', 'test-1']);
 

@@ -10,8 +10,9 @@ use Twig\TwigFunction;
 class BreadcrumbExtension extends AbstractExtension
 {
     public function __construct(
-        private BreadcrumbProvider $breadcrumbProvider
-    ) {}
+        private BreadcrumbProvider $breadcrumbProvider,
+    ) {
+    }
 
     public function getFunctions(): array
     {

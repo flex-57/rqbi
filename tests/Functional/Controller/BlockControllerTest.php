@@ -11,7 +11,7 @@ class BlockControllerTest extends BaseWebTestCase
         $page = $this->createPage(['title' => 'Page test']);
         $this->client->loginUser($this->createAdminUser());
 
-        $this->client->request('GET', '/page/' . $page->getId() . '/block/add');
+        $this->client->request('GET', '/page/'.$page->getId().'/block/add');
         $this->assertResponseIsSuccessful();
 
         // Soumission avec type=text
@@ -21,7 +21,7 @@ class BlockControllerTest extends BaseWebTestCase
             'block_dynamic[block][isActive]' => true,
         ]);
 
-        $this->assertResponseRedirects('/page/' . $page->getFullSlug());
+        $this->assertResponseRedirects('/page/'.$page->getFullSlug());
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.block-text', 'Mon contenu texte');
     }
@@ -31,7 +31,7 @@ class BlockControllerTest extends BaseWebTestCase
         $page = $this->createPage(['title' => 'Page image']);
         $this->client->loginUser($this->createAdminUser());
 
-        $this->client->request('POST', '/page/' . $page->getId() . '/block/add');
+        $this->client->request('POST', '/page/'.$page->getId().'/block/add');
         $this->assertResponseIsSuccessful();
 
         $this->client->submitForm('Ajouter', [
@@ -41,7 +41,7 @@ class BlockControllerTest extends BaseWebTestCase
             'block_dynamic[block][isActive]' => true,
         ]);
 
-        $this->assertResponseRedirects('/page/' . $page->getFullSlug());
+        $this->assertResponseRedirects('/page/'.$page->getFullSlug());
         $this->client->followRedirect();
         $this->assertSelectorExists('img[src="https://example.com/image.jpg"]');
     }
@@ -51,7 +51,7 @@ class BlockControllerTest extends BaseWebTestCase
         $page = $this->createPage(['title' => 'Page video']);
         $this->client->loginUser($this->createAdminUser());
 
-        $this->client->request('POST', '/page/' . $page->getId() . '/block/add');
+        $this->client->request('POST', '/page/'.$page->getId().'/block/add');
         $this->assertResponseIsSuccessful();
 
         $this->client->submitForm('Ajouter', [
@@ -61,7 +61,7 @@ class BlockControllerTest extends BaseWebTestCase
             'block_dynamic[block][isActive]' => true,
         ]);
 
-        $this->assertResponseRedirects('/page/' . $page->getFullSlug());
+        $this->assertResponseRedirects('/page/'.$page->getFullSlug());
         $this->client->followRedirect();
         $this->assertSelectorExists('video[src="https://example.com/video.mp4"]');
     }
@@ -72,7 +72,7 @@ class BlockControllerTest extends BaseWebTestCase
         $block = $this->createBlock($page, 'text', ['content' => 'Aperçu']);
         $this->client->loginUser($this->createAdminUser());
 
-        $this->client->request('GET', '/block/' . $block->getId() . '/preview');
+        $this->client->request('GET', '/block/'.$block->getId().'/preview');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Aperçu', (string) $this->client->getResponse()->getContent());
@@ -82,7 +82,7 @@ class BlockControllerTest extends BaseWebTestCase
     {
         $page = $this->createPage(['title' => 'Page visitor test']);
 
-        $this->client->request('GET', '/page/' . $page->getId() . '/block/add');
+        $this->client->request('GET', '/page/'.$page->getId().'/block/add');
 
         $this->assertResponseStatusCodeSame(302);
         $this->assertResponseRedirects('/login');
@@ -93,7 +93,7 @@ class BlockControllerTest extends BaseWebTestCase
         $page = $this->createPage(['title' => 'Page visitor preview']);
         $block = $this->createBlock($page, 'text', ['content' => 'Aperçu']);
 
-        $this->client->request('GET', '/block/' . $block->getId() . '/preview');
+        $this->client->request('GET', '/block/'.$block->getId().'/preview');
 
         $this->assertResponseStatusCodeSame(302);
         $this->assertResponseRedirects('/login');

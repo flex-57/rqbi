@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<String, Page>
+ * @extends Voter<string, Page>
  */
 class PageVoter extends Voter
 {

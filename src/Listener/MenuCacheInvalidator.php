@@ -12,7 +12,9 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 #[AsEntityListener(event: Events::postRemove, entity: Page::class)]
 class MenuCacheInvalidator
 {
-    public function __construct(private TagAwareCacheInterface $cache){}
+    public function __construct(private TagAwareCacheInterface $cache)
+    {
+    }
 
     public function __invoke(): void
     {

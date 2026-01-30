@@ -30,7 +30,7 @@ class BlockTextType extends AbstractType
             'data_class' => BlockText::class,
             'csrf_protection' => true,
             'csrf_field_name' => 'block_text_token',
-            'csrf_token_id'   => 'block_text_csrf',
+            'csrf_token_id' => 'block_text_csrf',
         ]);
     }
 }

@@ -1,7 +1,7 @@
 <div>
     <video
         src="{{ block.url|e }}"
-        {% if block.autoplay %}autoplay muted{% endif %}
+        {% if block.isAutoplay %}autoplay muted{% endif %}
         {% if block.format %}type="video/{{ block.format }}"{% endif %}
         controls
     >

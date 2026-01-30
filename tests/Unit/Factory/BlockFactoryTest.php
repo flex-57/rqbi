@@ -2,62 +2,68 @@
 
 namespace App\Tests\Unit\Factory;
 
-use App\Entity\BlockText;
+use App\Entity\Block;
 use App\Entity\BlockImage;
+use App\Entity\BlockText;
 use App\Entity\BlockVideo;
 use App\Entity\Enums\BlockTypeEnum;
 use App\Entity\Enums\VideoFormatEnum;
 use App\Factory\BlockFactory;
 use App\Factory\SingleBlockFactory\SingleBlockFactoryInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BlockFactoryTest extends TestCase
 {
     private BlockFactory $factory;
 
-    /** @var MockObject&SingleBlockFactoryInterface */
-    private SingleBlockFactoryInterface $mockTextFactory;
-
-    /** @var MockObject&SingleBlockFactoryInterface */
-    private SingleBlockFactoryInterface $mockImageFactory;
-
-    /** @var MockObject&SingleBlockFactoryInterface */
-    private SingleBlockFactoryInterface $mockVideoFactory;
-
     protected function setUp(): void
     {
-        // 1️⃣ Mock Text Factory
-        $this->mockTextFactory = $this->createMock(SingleBlockFactoryInterface::class);
-        $this->mockTextFactory->method('supports')
-            ->willReturnCallback(fn($type) => $type === BlockTypeEnum::TEXT);
-        $this->mockTextFactory->method('create')
-            ->willReturnCallback(fn($type, $data) => (new BlockText())->setContent($data['content'] ?? ''));
+        // 1. Stub Text Factory
+        $textFactory = new class implements SingleBlockFactoryInterface {
+            public static function getSupportedType(): BlockTypeEnum
+            {
+                return BlockTypeEnum::TEXT;
+            }
 
-        // 2️⃣ Mock Image Factory
-        $this->mockImageFactory = $this->createMock(SingleBlockFactoryInterface::class);
-        $this->mockImageFactory->method('supports')
-            ->willReturnCallback(fn($type) => $type === BlockTypeEnum::IMAGE);
-        $this->mockImageFactory->method('create')
-            ->willReturnCallback(fn($type, $data) => (new BlockImage())->setUrl($data['url'] ?? '')->setAlt($data['alt'] ?? ''));
+            public function create(array $data): Block
+            {
+                return (new BlockText())->setContent($data['content'] ?? '');
+            }
+        };
 
-        // 3️⃣ Mock Video Factory
-        $this->mockVideoFactory = $this->createMock(SingleBlockFactoryInterface::class);
-        $this->mockVideoFactory->method('supports')
-            ->willReturnCallback(fn($type) => $type === BlockTypeEnum::VIDEO);
-        $this->mockVideoFactory->method('create')
-            ->willReturnCallback(fn($type, $data) => (new BlockVideo())
-                ->setUrl($data['url'] ?? '')
-                ->setFormat($data['format'] ?? VideoFormatEnum::MP4)
-                ->setIsAutoplay($data['isAutoplay'] ?? false)
-            );
+        // 2. Stub Image Factory
+        $imageFactory = new class implements SingleBlockFactoryInterface {
+            public static function getSupportedType(): BlockTypeEnum
+            {
+                return BlockTypeEnum::IMAGE;
+            }
 
-        // 4️⃣ Injecte tous les mocks dans la BlockFactory principale
-        $this->factory = new BlockFactory([
-            $this->mockTextFactory,
-            $this->mockImageFactory,
-            $this->mockVideoFactory,
-        ]);
+            public function create(array $data): Block
+            {
+                return (new BlockImage())
+                    ->setUrl($data['url'] ?? '')
+                    ->setAlt($data['alt'] ?? '');
+            }
+        };
+
+        // 3. Stub Video Factory
+        $videoFactory = new class implements SingleBlockFactoryInterface {
+            public static function getSupportedType(): BlockTypeEnum
+            {
+                return BlockTypeEnum::VIDEO;
+            }
+
+            public function create(array $data): Block
+            {
+                return (new BlockVideo())
+                    ->setUrl($data['url'] ?? '')
+                    ->setFormat($data['format'] ?? VideoFormatEnum::MP4)
+                    ->setIsAutoplay($data['isAutoplay'] ?? false);
+            }
+        };
+
+        // 4. Injecte les stubs
+        $this->factory = new BlockFactory([$textFactory, $imageFactory, $videoFactory]);
     }
 
     public function testCreateTextBlock(): void
@@ -96,8 +102,8 @@ class BlockFactoryTest extends TestCase
     public function testUnsupportedTypeThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('No factory found for block type');
+        $this->expectExceptionMessage('No factory registered for block type slider');
 
-        $this->factory->create(BlockTypeEnum::from('unsupported_type'), []);
+        $this->factory->create(BlockTypeEnum::SLIDER, []);
     }
 }

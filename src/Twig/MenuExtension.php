@@ -8,7 +8,9 @@ use Twig\TwigFunction;
 
 class MenuExtension extends AbstractExtension
 {
-    public function __construct(private MenuProvider $menuProvider) {}
+    public function __construct(private MenuProvider $menuProvider)
+    {
+    }
 
     public function getFunctions(): array
     {

@@ -38,7 +38,7 @@ class BlockImageType extends AbstractType
             'data_class' => BlockImage::class,
             'csrf_protection' => true,
             'csrf_field_name' => 'block_image_token',
-            'csrf_token_id'   => 'block_image_csrf',
+            'csrf_token_id' => 'block_image_csrf',
         ]);
     }
 }

@@ -10,8 +10,9 @@ use Twig\TwigFunction;
 class BlockExtension extends AbstractExtension
 {
     public function __construct(
-        private BlockRenderingService $blockRenderingService
-    ) {}
+        private BlockRenderingService $blockRenderingService,
+    ) {
+    }
 
     public function getFunctions(): array
     {

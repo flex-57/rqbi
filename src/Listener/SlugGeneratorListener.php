@@ -14,8 +14,9 @@ class SlugGeneratorListener
 {
     public function __construct(
         private SlugService $slugService,
-        private EntityManagerInterface $entityManager
-    ) {}
+        private EntityManagerInterface $entityManager,
+    ) {
+    }
 
     public function prePersist(Page $page): void
     {
@@ -27,7 +28,7 @@ class SlugGeneratorListener
     {
         $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($page); // Récupérer les changements de l'entité
         // Générer le slug uniquement si le slug ou le parent a changé
-        if(isset($changeSet['slug']) || isset($changeSet['parent'])) {
+        if (isset($changeSet['slug']) || isset($changeSet['parent'])) {
             // $this->generateSlug($page);
             $this->generateFullSlug($page);
         }
@@ -44,12 +45,10 @@ class SlugGeneratorListener
 
     private function generateFullSlug(Page $page): void
     {
-        $slugs = [];
-        $current = $page;
-        while ($current !== null) {
-            array_unshift($slugs, $current->getSlug());
-            $current = $current->getParent();
-        }
+        $slugs = array_map(
+            fn (Page $p) => $p->getSlug(),
+            $page->getAncestry()
+        );
         $page->setFullSlug(implode('/', $slugs));
     }
 }
