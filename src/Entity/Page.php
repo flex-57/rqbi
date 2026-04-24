@@ -31,7 +31,6 @@ class Page
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[Groups(['page:read'])]
     private ?Page $parent = null;
 
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['persist'])]

@@ -1,5 +1,6 @@
 <template>
-  <div class="relative w-full overflow-hidden bg-gray-900 my-8" style="min-height: 320px;">
+  <div class="my-8 max-w-4xl mx-auto px-4">
+  <div class="relative w-full overflow-hidden bg-gray-900 rounded-lg" style="min-height: 320px;">
     <div
       class="flex transition-transform duration-500 ease-in-out h-full"
       :style="{ transform: `translateX(-${current * 100}%)` }"
@@ -40,6 +41,7 @@
         @click="current = i"
       />
     </div>
+  </div>
   </div>
 </template>
 

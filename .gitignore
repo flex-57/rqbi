@@ -2,6 +2,7 @@
 /node_modules/
 /.pnp
 .pnp.js
+/public/uploads/
 
 ###> symfony/framework-bundle ###
 /.env.local

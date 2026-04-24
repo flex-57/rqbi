@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" @click.self="$emit('close')">
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between p-6 border-b border-gray-200">
         <h2 class="text-xl font-bold text-rqbi-dark">
@@ -78,6 +78,19 @@
           <div>
             <label class="form-label">Légende (optionnelle)</label>
             <input v-model="form.content.caption" type="text" class="form-input" placeholder="Légende sous l'image" />
+          </div>
+          <div>
+            <label class="form-label">Texte associé (optionnel)</label>
+            <textarea v-model="form.content.text" rows="3" class="form-input resize-none" placeholder="Texte à afficher autour de l'image" />
+          </div>
+          <div v-if="form.content.text">
+            <label class="form-label">Position du texte</label>
+            <div class="flex gap-4">
+              <label v-for="opt in textPositions" :key="opt.value" class="flex items-center gap-1 text-sm cursor-pointer">
+                <input v-model="form.content.text_position" type="radio" :value="opt.value" />
+                {{ opt.label }}
+              </label>
+            </div>
           </div>
         </template>
 
@@ -229,6 +242,13 @@ const blockTypes = [
   { value: 'divider', label: 'Séparateur' },
 ]
 
+const textPositions = [
+  { value: 'top',    label: 'Au-dessus' },
+  { value: 'bottom', label: 'En-dessous' },
+  { value: 'left',   label: 'À gauche' },
+  { value: 'right',  label: 'À droite' },
+]
+
 const bgOptions = [
   { value: 'red',   label: 'Rouge',  class: 'bg-rqbi-red' },
   { value: 'blue',  label: 'Bleu',   class: 'bg-rqbi-blue' },
@@ -249,7 +269,7 @@ const form = reactive({
 function resetContent() {
   const defaults: Record<string, Record<string, unknown>> = {
     text:    { title: '', body: '' },
-    image:   { url: '', alt: '', caption: '' },
+    image:   { url: '', alt: '', caption: '', text: '', text_position: 'bottom' },
     slider:  { slides: [], autoplay: true, interval: 4000 },
     video:   { url: '', title: '', provider: 'youtube' },
     cta:     { title: '', subtitle: '', button_label: '', button_url: '', background: 'red' },

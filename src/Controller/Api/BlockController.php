@@ -104,6 +104,50 @@ class BlockController extends AbstractController
         return JsonResponse::fromJsonString($data);
     }
 
+    private function resizeImage(string $path, int $maxWidth): void
+    {
+        $info = @getimagesize($path);
+        if (!$info || $info[0] <= $maxWidth) {
+            return;
+        }
+
+        [$width, $height] = $info;
+        $newWidth  = $maxWidth;
+        $newHeight = (int) round($height * ($maxWidth / $width));
+
+        $src = match ($info['mime']) {
+            'image/jpeg' => imagecreatefromjpeg($path),
+            'image/png'  => imagecreatefrompng($path),
+            'image/webp' => imagecreatefromwebp($path),
+            default      => null,
+        };
+
+        if (!$src) {
+            return;
+        }
+
+        $dst = imagecreatetruecolor($newWidth, $newHeight);
+
+        if ($info['mime'] === 'image/png') {
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            imagefilledrectangle($dst, 0, 0, $newWidth, $newHeight,
+                imagecolorallocatealpha($dst, 255, 255, 255, 127));
+        }
+
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+        match ($info['mime']) {
+            'image/jpeg' => imagejpeg($dst, $path, 85),
+            'image/png'  => imagepng($dst, $path, 6),
+            'image/webp' => imagewebp($dst, $path, 85),
+            default      => null,
+        };
+
+        imagedestroy($src);
+        imagedestroy($dst);
+    }
+
     #[Route('/pages/{pageId}/blocks/reorder', name: 'reorder', methods: ['PUT'])]
     public function reorder(int $pageId, Request $request): JsonResponse
     {
@@ -130,8 +174,9 @@ class BlockController extends AbstractController
             return $this->json(['error' => 'Aucun fichier'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $mimeType = $file->getMimeType() ?? '';
         $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
-        if (!in_array($file->getMimeType(), $allowed, true)) {
+        if (!in_array($mimeType, $allowed, true)) {
             return $this->json(['error' => 'Type de fichier non autorisé'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -141,6 +186,11 @@ class BlockController extends AbstractController
         $filename = uniqid('', true) . '.' . $ext;
         $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
         $file->move($uploadDir, $filename);
+
+        $fullPath = $uploadDir . '/' . $filename;
+        if (str_starts_with($mimeType, 'image/')) {
+            $this->resizeImage($fullPath, 1200);
+        }
 
         return $this->json(['url' => '/uploads/' . $filename], Response::HTTP_CREATED);
     }
