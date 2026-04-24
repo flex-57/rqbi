@@ -12,6 +12,7 @@
     </div>
 
     <template v-else-if="pagesStore.currentPage">
+      <PageHeader :slug="slug" :title="pagesStore.currentPage.title" />
       <BlockRenderer
         :blocks="pagesStore.currentPage.blocks"
         :is-editing="isEditing"
@@ -47,6 +48,7 @@ import { usePagesStore } from '../stores/pages'
 import { useBlocksStore } from '../stores/blocks'
 import BlockRenderer from './BlockRenderer.vue'
 import BlockEditor from './BlockEditor.vue'
+import PageHeader from './PageHeader.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
 import type { Block } from '../stores/pages'
 

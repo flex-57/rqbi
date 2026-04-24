@@ -38,6 +38,7 @@ security:
         - { path: ^/api/auth/me, roles: PUBLIC_ACCESS }
         - { path: ^/api/pages, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/blocks/types, roles: PUBLIC_ACCESS }
+        - { path: ^/api/contact, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api, roles: ROLE_ADMIN }
         - { path: ^/, roles: PUBLIC_ACCESS }
 

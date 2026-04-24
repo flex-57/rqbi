@@ -1,5 +1,5 @@
 <template>
-  <div class="my-8 px-4 max-w-4xl mx-auto">
+  <div class="py-10 px-4 max-w-5xl mx-auto">
     <h3 v-if="block.content.title" class="text-xl font-semibold mb-4 text-rqbi-dark">
       {{ block.content.title }}
     </h3>

@@ -3,6 +3,7 @@
     <div
       v-for="block in visibleBlocks"
       :key="block.id"
+      v-animate-in="['image', 'slider'].includes(block.type) ? 'scale' : 'fade-up'"
       class="group relative transition-opacity"
       :class="{
         'block-editing-overlay': isEditing && block.visible,

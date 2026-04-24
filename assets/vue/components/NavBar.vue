@@ -1,19 +1,19 @@
 <template>
-  <header class="bg-white shadow-sm sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+  <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
       <!-- Logo -->
       <RouterLink to="/accueil" class="flex items-center gap-3 shrink-0">
-        <img src="/images/cropped-logo-banniere-512x193.png" alt="RQBI" class="h-10 w-auto" />
+        <img src="/images/cropped-logo-banniere-512x193.png" alt="RQBI" class="h-20 w-auto" />
       </RouterLink>
 
       <!-- Navigation principale -->
-      <nav class="hidden md:flex items-center gap-1">
+      <nav class="hidden lg:flex items-center gap-1">
         <template v-for="page in pagesStore.tree" :key="page.id">
           <div class="relative group">
             <RouterLink
               :to="'/' + page.slug"
-              class="px-4 py-2 text-sm font-medium text-rqbi-dark hover:text-rqbi-red transition-colors rounded"
-              active-class="text-rqbi-red"
+              class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-rqbi-red hover:bg-red-50 transition-all rounded-lg"
+              active-class="text-rqbi-red bg-red-50"
             >
               {{ page.title }}
             </RouterLink>
@@ -104,14 +104,14 @@
         </RouterLink>
 
         <!-- Menu mobile -->
-        <button class="md:hidden p-2 text-gray-600" @click="mobileOpen = !mobileOpen">
+        <button class="lg:hidden p-2 text-gray-600" @click="mobileOpen = !mobileOpen">
           <span class="text-xl">☰</span>
         </button>
       </div>
     </div>
 
     <!-- Menu mobile déroulant -->
-    <div v-if="mobileOpen" class="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
+    <div v-if="mobileOpen" class="lg:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
       <template v-for="page in pagesStore.tree" :key="page.id">
         <RouterLink
           :to="'/' + page.slug"

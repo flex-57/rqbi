@@ -24,7 +24,7 @@ class BlockManagerTest extends TestCase
         $this->factory = new BlockFactory();
         $this->blockRepository = $this->createMock(BlockRepository::class);
         $this->em = $this->createMock(EntityManagerInterface::class);
-        $this->manager = new BlockManager($this->factory, $this->blockRepository, $this->em);
+        $this->manager = new BlockManager($this->factory, $this->blockRepository, $this->em, '/tmp');
     }
 
     public function testCreateBlock_WithValidData_PersistsAndFlushes(): void

@@ -9,17 +9,36 @@ use App\Repository\BlockRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+use App\Entity\BlockText;
+use App\Entity\BlockImage;
+use App\Entity\BlockSlider;
+use App\Entity\BlockVideo;
+use App\Entity\BlockCta;
+use App\Entity\BlockDivider;
+use App\Entity\BlockStats;
+use App\Entity\BlockCards;
+use App\Entity\BlockTimeline;
+use App\Entity\BlockContact;
+use App\Entity\BlockFaq;
+use App\Entity\BlockGallery;
+
 #[ORM\Entity(repositoryClass: BlockRepository::class)]
 #[ORM\Table(name: 'block')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([
-    'text'    => BlockText::class,
-    'image'   => BlockImage::class,
-    'slider'  => BlockSlider::class,
-    'video'   => BlockVideo::class,
-    'cta'     => BlockCta::class,
-    'divider' => BlockDivider::class,
+    'text'         => BlockText::class,
+    'image'        => BlockImage::class,
+    'slider'       => BlockSlider::class,
+    'video'        => BlockVideo::class,
+    'cta'          => BlockCta::class,
+    'divider'      => BlockDivider::class,
+    'stats'        => BlockStats::class,
+    'cards'        => BlockCards::class,
+    'timeline'     => BlockTimeline::class,
+    'contact'      => BlockContact::class,
+    'faq'          => BlockFaq::class,
+    'gallery'      => BlockGallery::class,
 ])]
 #[ORM\HasLifecycleCallbacks]
 abstract class Block

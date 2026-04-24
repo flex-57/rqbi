@@ -47,10 +47,11 @@ class BlockControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $data = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($data);
-        $this->assertCount(6, $data);
+        $this->assertCount(12, $data);
         $values = array_column($data, 'value');
-        $this->assertContains('text', $values);
-        $this->assertContains('image', $values);
+        foreach (['text', 'image', 'slider', 'video', 'cta', 'divider', 'stats', 'cards', 'timeline', 'contact', 'faq', 'gallery'] as $type) {
+            $this->assertContains($type, $values, "Type '$type' absent de la liste");
+        }
     }
 
     public function testCreateBlock_WithValidData_CreatesBlock(): void
@@ -82,5 +83,41 @@ class BlockControllerTest extends WebTestCase
         ], json_encode(['type' => 'text']));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function testCreateBlock_StatsType_CreatesBlock(): void
+    {
+        $this->client->request('POST', "/api/pages/{$this->pageId}/blocks", [], [], $this->authHeader(), json_encode([
+            'type'    => 'stats',
+            'content' => ['title' => 'Chiffres', 'stats' => [['value' => '97', 'label' => 'Salariés', 'color' => 'red']]],
+        ]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame('stats', $data['type']);
+    }
+
+    public function testCreateBlock_FaqType_CreatesBlock(): void
+    {
+        $this->client->request('POST', "/api/pages/{$this->pageId}/blocks", [], [], $this->authHeader(), json_encode([
+            'type'    => 'faq',
+            'content' => ['title' => 'FAQ', 'items' => [['question' => 'Q ?', 'answer' => 'R.']]],
+        ]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame('faq', $data['type']);
+    }
+
+    public function testCreateBlock_GalleryType_CreatesBlock(): void
+    {
+        $this->client->request('POST', "/api/pages/{$this->pageId}/blocks", [], [], $this->authHeader(), json_encode([
+            'type'    => 'gallery',
+            'content' => ['columns' => 3, 'items' => [['url' => '/img/test.jpg', 'alt' => 'Test']]],
+        ]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame('gallery', $data['type']);
     }
 }

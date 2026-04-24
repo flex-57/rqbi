@@ -1,6 +1,6 @@
 <template>
   <section
-    class="py-16 px-4 text-center my-8"
+    class="py-16 px-4 text-center"
     :class="bgClass"
   >
     <div class="max-w-2xl mx-auto">
@@ -10,7 +10,7 @@
       </p>
       <a
         :href="block.content.button_url as string"
-        class="inline-block px-8 py-4 font-bold rounded-lg transition-colors duration-200 text-lg"
+        class="inline-block px-9 py-4 font-bold rounded-full transition-all duration-200 text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         :class="btnClass"
       >
         {{ block.content.button_label }}

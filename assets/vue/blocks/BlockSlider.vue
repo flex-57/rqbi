@@ -1,5 +1,5 @@
 <template>
-  <div class="my-8 max-w-4xl mx-auto px-4">
+  <div class="py-10 max-w-5xl mx-auto px-4">
   <div class="relative w-full overflow-hidden bg-gray-900 rounded-lg" style="min-height: 320px;">
     <div
       class="flex transition-transform duration-500 ease-in-out h-full"

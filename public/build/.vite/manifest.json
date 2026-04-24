@@ -1,20 +1,15 @@
 {
   "assets/app.ts": {
-    "file": "assets/app-CzILnj0T.js",
+    "file": "assets/app-C3u6iCOK.js",
     "name": "app",
     "src": "assets/app.ts",
     "isEntry": true,
     "css": [
-      "assets/app-DTp31Azf.css"
+      "assets/app-DNV-iKlV.css"
     ],
     "assets": [
-      "assets/cropped-logo-banniere-180x180-e4hD3TX8.png",
       "assets/cropped-logo-banniere-512x193-CBHZwDua.png"
     ]
-  },
-  "images/cropped-logo-banniere-180x180.png": {
-    "file": "assets/cropped-logo-banniere-180x180-e4hD3TX8.png",
-    "src": "images/cropped-logo-banniere-180x180.png"
   },
   "images/cropped-logo-banniere-512x193.png": {
     "file": "assets/cropped-logo-banniere-512x193-CBHZwDua.png",

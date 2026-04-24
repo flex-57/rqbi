@@ -1,5 +1,5 @@
 <template>
-  <section class="py-12 px-4 max-w-4xl mx-auto">
+  <section class="py-10 px-4 max-w-5xl mx-auto">
     <h2 v-if="block.content.title" class="text-3xl font-bold text-rqbi-dark mb-6">
       {{ block.content.title }}
     </h2>
