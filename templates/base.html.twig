@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Régie de Quartier Behren Insertion — Association d'insertion par l'activité économique">
+    <title>RQBI — Régie de Quartier Behren Insertion</title>
+    <link rel="icon" href="/images/cropped-logo-banniere-180x180.png" type="image/png">
+
+    {% if app.environment == 'dev' %}
+        <script type="module" src="http://localhost:5173/@vite/client"></script>
+        <script type="module" src="http://localhost:5173/assets/app.ts"></script>
+    {% else %}
+        {{ vite_asset('assets/app.ts')|raw }}
+    {% endif %}
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
