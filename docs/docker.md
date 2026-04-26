@@ -6,8 +6,8 @@ Le projet utilise un **Dockerfile multi-stage** (`docker/php/Dockerfile`) et deu
 
 | Fichier | Usage |
 |---------|-------|
-| `docker-compose.yml` | Développement local |
-| `docker-compose.prod.yml` | Production (standalone) |
+| `compose.yaml` | Développement local |
+| `compose.prod.yml` | Production (standalone) |
 
 ### Stages du Dockerfile
 
@@ -128,10 +128,10 @@ cp .env.docker .env.local
 
 ```bash
 # Build et démarrage
-docker compose -f docker-compose.prod.yml --env-file .env.local up -d --build
+docker compose -f compose.prod.yml --env-file .env.local up -d --build
 
 # Première fois : charger les fixtures (optionnel en prod)
-docker compose -f docker-compose.prod.yml exec php php bin/console doctrine:fixtures:load
+docker compose -f compose.prod.yml exec php php bin/console doctrine:fixtures:load
 ```
 
 L'entrypoint prod exécute automatiquement :
@@ -174,7 +174,7 @@ docker/
 └── nginx/
     ├── dev.conf                — proxy simple vers PHP-FPM
     └── prod.conf               — + cache headers, gzip, sécurité
-docker-compose.yml              — dev (nginx + php + node + mysql + mailpit)
-docker-compose.prod.yml         — prod standalone (nginx-prod + php + mysql)
+compose.yaml                    — dev (nginx + php + node + mysql + mailpit)
+compose.prod.yml                — prod standalone (nginx-prod + php + mysql)
 .env.docker                     — template variables de production
 ```
