@@ -1,33 +1,32 @@
 <template>
-  <section class="py-10 px-4 max-w-5xl mx-auto">
-    <h2 v-if="block.content.title" class="text-2xl font-bold text-rqbi-dark mb-8">
-      {{ block.content.title }}
-    </h2>
+  <section class="py-20 container-rqbi">
+    <h2 v-if="block.content.title" class="mb-12 max-w-3xl" v-animate-in>{{ block.content.title }}</h2>
     <div class="grid gap-3" :class="gridClass">
       <div
         v-for="(item, i) in items" :key="i"
         v-animate-in="'scale'"
-        class="overflow-hidden rounded-xl cursor-pointer group"
+        class="group relative aspect-square overflow-hidden rounded-xl bg-rqbi-cream-deep cursor-pointer"
         @click="lightboxIndex = i"
       >
-        <img
-          :src="item.url"
-          :alt="item.alt || ''"
-          class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        <img :src="item.url" :alt="item.alt || ''"
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <div v-if="item.caption" class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform">
+          <span class="text-white text-xs font-medium">{{ item.caption }}</span>
+        </div>
       </div>
     </div>
 
+    <!-- Lightbox -->
     <div
       v-if="lightboxIndex !== null"
       class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
       @click="lightboxIndex = null"
     >
-      <button class="absolute top-4 right-4 text-white text-3xl leading-none" @click="lightboxIndex = null">×</button>
+      <button class="absolute top-4 right-4 text-white text-3xl leading-none hover:text-rqbi-red transition-colors" @click="lightboxIndex = null">×</button>
       <img
         :src="items[lightboxIndex].url"
         :alt="items[lightboxIndex].alt || ''"
-        class="max-w-full max-h-full object-contain rounded"
+        class="max-w-full max-h-full object-contain rounded-xl"
         @click.stop
       />
     </div>

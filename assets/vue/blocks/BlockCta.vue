@@ -1,19 +1,25 @@
 <template>
   <section
-    class="py-16 px-4 text-center"
+    class="relative py-24 px-6 text-center overflow-hidden"
     :class="bgClass"
   >
-    <div class="max-w-2xl mx-auto">
-      <h2 class="text-3xl font-bold mb-4" :class="textClass">{{ block.content.title }}</h2>
-      <p v-if="block.content.subtitle" class="text-lg mb-8 opacity-90" :class="textClass">
+    <div class="absolute inset-0 pointer-events-none"
+      :class="block.content.background && block.content.background !== 'light'
+        ? 'bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.08),transparent_40%)]'
+        : ''"
+    />
+    <div class="max-w-2xl mx-auto relative" v-animate-in>
+      <h2 class="font-display mb-4" :class="textClass">{{ block.content.title }}</h2>
+      <p v-if="block.content.subtitle" class="text-lg mb-10 opacity-90" :class="textClass">
         {{ block.content.subtitle }}
       </p>
       <a
-        :href="block.content.button_url as string"
-        class="inline-block px-9 py-4 font-bold rounded-full transition-all duration-200 text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+        :href="(block.content.button_url as string)"
+        class="inline-flex items-center gap-2 px-9 py-4 rounded-full font-medium text-base transition-all duration-300 hover:-translate-y-0.5"
         :class="btnClass"
       >
         {{ block.content.button_label }}
+        <span aria-hidden="true">→</span>
       </a>
     </div>
   </section>
@@ -29,20 +35,18 @@ const bgClass = computed(() => {
   switch (props.block.content.background) {
     case 'red':  return 'bg-rqbi-red'
     case 'blue': return 'bg-rqbi-blue'
-    case 'dark': return 'bg-rqbi-dark'
-    default:     return 'bg-rqbi-light'
+    case 'dark': return 'bg-rqbi-ink'
+    default:     return 'bg-rqbi-cream-deep'
   }
 })
-
 const textClass = computed(() => {
   const bg = props.block.content.background
-  return bg === 'light' || bg === undefined ? 'text-rqbi-dark' : 'text-white'
+  return bg === 'light' || bg === undefined ? 'text-rqbi-ink' : 'text-white'
 })
-
 const btnClass = computed(() => {
   const bg = props.block.content.background
   return bg === 'light' || bg === undefined
-    ? 'bg-rqbi-red text-white hover:bg-red-700'
-    : 'bg-white text-rqbi-dark hover:bg-gray-100'
+    ? 'bg-rqbi-red text-white shadow-rqbi-red hover:bg-rqbi-red-deep'
+    : 'bg-white text-rqbi-ink hover:bg-rqbi-cream'
 })
 </script>

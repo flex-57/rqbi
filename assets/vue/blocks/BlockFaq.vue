@@ -1,36 +1,32 @@
 <template>
-  <section class="py-10 px-4 max-w-5xl mx-auto">
-    <h2 v-if="block.content.title" class="text-2xl font-bold text-rqbi-dark mb-8">
-      {{ block.content.title }}
-    </h2>
-    <div class="space-y-2">
-      <div
+  <section class="py-20 container-rqbi-narrow">
+    <h2 v-if="block.content.title" class="mb-10" v-animate-in>{{ block.content.title }}</h2>
+    <div class="flex flex-col gap-2">
+      <details
         v-for="(item, i) in items" :key="i"
         v-animate-in
-        class="border border-gray-200 rounded-xl overflow-hidden"
+        class="group bg-white border border-rqbi-line rounded-xl overflow-hidden transition-colors hover:border-rqbi-red"
       >
-        <button
-          class="w-full flex items-center justify-between px-6 py-4 text-left font-medium text-rqbi-dark hover:bg-gray-50 transition-colors"
-          @click="toggle(i)"
-        >
-          <span>{{ item.question }}</span>
-          <span class="text-rqbi-red text-xl transition-transform duration-200 shrink-0 ml-4"
-            :class="open === i ? 'rotate-45' : ''">+</span>
-        </button>
-        <div v-if="open === i" class="px-6 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100">
-          <p class="pt-3">{{ item.answer }}</p>
+        <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none">
+          <span class="font-display text-lg font-medium text-rqbi-ink">{{ item.question }}</span>
+          <span class="shrink-0 w-8 h-8 rounded-full bg-rqbi-cream group-hover:bg-rqbi-red group-hover:text-white text-rqbi-ink flex items-center justify-center transition-all group-open:rotate-45">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-rqbi-ink-mute leading-relaxed text-sm">
+          {{ item.answer }}
         </div>
-      </div>
+      </details>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import type { Block } from '../stores/pages'
 
 const props = defineProps<{ block: Block; isEditing: boolean }>()
-const items = computed(() => (props.block.content.items as any[]) ?? [])
-const open = ref<number | null>(null)
-function toggle(i: number) { open.value = open.value === i ? null : i }
+const items = computed(() => (props.block.content.items as Array<{ question: string; answer: string }>) ?? [])
 </script>
+
+<style scoped>
+summary::-webkit-details-marker { display: none; }
+</style>

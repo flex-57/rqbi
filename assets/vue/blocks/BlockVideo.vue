@@ -1,18 +1,25 @@
 <template>
-  <div class="py-10 px-4 max-w-5xl mx-auto">
-    <h3 v-if="block.content.title" class="text-xl font-semibold mb-4 text-rqbi-dark">
+  <section class="py-12 container-rqbi-narrow" v-animate-in>
+    <h3 v-if="block.content.title" class="font-display text-2xl font-medium mb-6 text-rqbi-ink">
       {{ block.content.title }}
     </h3>
-    <div class="relative w-full" style="padding-top: 56.25%">
+    <div class="rounded-2xl overflow-hidden border border-rqbi-line shadow-rqbi-md aspect-video bg-rqbi-ink">
+      <video
+        v-if="isNativeVideo"
+        :src="(block.content.url as string)"
+        controls
+        class="w-full h-full object-cover"
+      />
       <iframe
-        class="absolute inset-0 w-full h-full rounded shadow"
+        v-else
         :src="embedUrl"
+        class="w-full h-full"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       />
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -21,9 +28,13 @@ import type { Block } from '../stores/pages'
 
 const props = defineProps<{ block: Block; isEditing: boolean }>()
 
+const isNativeVideo = computed(() =>
+  /\.(mp4|webm)$/i.test(props.block.content.url as string ?? '')
+)
+
 const embedUrl = computed(() => {
   const url = props.block.content.url as string
-  const provider = props.block.content.provider as string ?? 'youtube'
+  const provider = (props.block.content.provider as string) ?? 'youtube'
 
   if (provider === 'youtube') {
     const match = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)

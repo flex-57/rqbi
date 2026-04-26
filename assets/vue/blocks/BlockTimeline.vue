@@ -1,18 +1,17 @@
 <template>
-  <section class="py-10 px-4 max-w-5xl mx-auto">
-    <h2 v-if="block.content.title" class="text-2xl font-bold text-rqbi-dark mb-8">
-      {{ block.content.title }}
-    </h2>
-    <div class="space-y-6">
-      <div v-for="(event, i) in events" :key="i" v-animate-in class="flex gap-4">
-        <div class="shrink-0 w-16 text-right">
-          <span class="text-rqbi-red font-bold text-sm">{{ event.year }}</span>
-        </div>
-        <div class="relative flex-1 pb-6">
-          <div class="absolute left-0 top-0 bottom-0 -translate-x-1/2 w-px bg-gray-200" />
-          <div class="absolute left-0 top-1 -translate-x-1/2 w-3 h-3 rounded-full bg-rqbi-red" />
-          <p class="text-gray-600 text-sm leading-relaxed pl-4">{{ event.text }}</p>
-        </div>
+  <section class="py-20 container-rqbi-narrow">
+    <h2 v-if="block.content.title" class="mb-12" v-animate-in>{{ block.content.title }}</h2>
+    <div class="relative pl-8">
+      <span class="absolute left-1.5 top-2 bottom-2 w-px bg-rqbi-line" />
+      <div
+        v-for="(event, i) in events" :key="i"
+        v-animate-in
+        class="relative pb-10 last:pb-0"
+      >
+        <span class="absolute -left-[1.85rem] top-1.5 w-3 h-3 rounded-full bg-white border-2 border-rqbi-red" />
+        <span class="font-mono text-xs tracking-widest text-rqbi-red mb-2 block">{{ event.year }}</span>
+        <h4 v-if="event.title" class="font-display text-xl font-medium mb-1.5 text-rqbi-ink">{{ event.title }}</h4>
+        <p class="text-rqbi-ink-mute text-sm leading-relaxed">{{ event.text }}</p>
       </div>
     </div>
   </section>

@@ -1,30 +1,34 @@
 <template>
-  <figure class="py-10 px-4 max-w-5xl mx-auto">
-    <!-- top -->
-    <p v-if="text && position === 'top'" class="rqbi-content text-gray-700 mb-4" v-html="text" />
+  <figure class="py-12 container-rqbi" v-animate-in>
+    <!-- Texte au-dessus -->
+    <p v-if="text && position === 'top'" class="rqbi-content mb-6" v-html="text" />
 
-    <!-- left / right -->
+    <!-- Image + texte côte à côte -->
     <div
       v-if="text && (position === 'left' || position === 'right')"
-      class="flex flex-col gap-6 items-center md:flex-row"
+      class="flex flex-col gap-8 items-center md:flex-row"
       :class="position === 'right' ? 'md:flex-row-reverse' : ''"
     >
-      <img :src="block.content.url as string" :alt="block.content.alt as string" class="w-full md:w-1/2 h-auto rounded shadow-sm" />
-      <p class="rqbi-content text-gray-700 w-full md:w-1/2" v-html="text" />
+      <div class="w-full md:w-1/2 overflow-hidden rounded-2xl border border-rqbi-line shadow-rqbi-md">
+        <img :src="(block.content.url as string)" :alt="(block.content.alt as string) || ''"
+          class="w-full h-auto block transition-transform duration-700 hover:scale-105" />
+      </div>
+      <p class="rqbi-content w-full md:w-1/2" v-html="text" />
     </div>
 
-    <!-- no text or top/bottom: normal image -->
-    <img
+    <!-- Image seule -->
+    <div
       v-if="!text || position === 'top' || position === 'bottom'"
-      :src="block.content.url as string"
-      :alt="block.content.alt as string"
-      class="w-full h-auto rounded shadow-sm"
-    />
+      class="overflow-hidden rounded-2xl border border-rqbi-line shadow-rqbi-md"
+    >
+      <img :src="(block.content.url as string)" :alt="(block.content.alt as string) || ''"
+        class="w-full h-auto block transition-transform duration-700 hover:scale-105" />
+    </div>
 
-    <!-- bottom -->
-    <p v-if="text && position === 'bottom'" class="rqbi-content text-gray-700 mt-4" v-html="text" />
+    <!-- Texte en-dessous -->
+    <p v-if="text && position === 'bottom'" class="rqbi-content mt-6" v-html="text" />
 
-    <figcaption v-if="block.content.caption" class="text-center text-sm text-gray-500 mt-2 italic">
+    <figcaption v-if="block.content.caption" class="mt-3 text-sm text-rqbi-ink-mute italic font-display">
       {{ block.content.caption }}
     </figcaption>
   </figure>

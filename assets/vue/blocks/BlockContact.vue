@@ -1,97 +1,79 @@
 <template>
-  <section class="py-10 px-4 max-w-5xl mx-auto">
-    <h2 v-if="block.content.title" class="text-2xl font-bold text-rqbi-dark mb-8">
-      {{ block.content.title }}
-    </h2>
+  <section class="py-20 container-rqbi">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <!-- Infos -->
+      <div class="space-y-6" v-animate-in>
+        <h2 v-if="block.content.title">{{ block.content.title }}</h2>
 
-      <!-- Gauche : infos + carte -->
-      <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div v-if="block.content.address" class="flex gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <span class="text-rqbi-red text-xl shrink-0">📍</span>
-            <div>
-              <p class="font-semibold text-rqbi-dark text-sm mb-1">Adresse</p>
-              <p class="text-gray-600 text-sm whitespace-pre-line">{{ block.content.address }}</p>
-            </div>
+          <div v-if="block.content.address" class="bg-white border border-rqbi-line rounded-xl p-5 hover:-translate-y-1 hover:border-rqbi-red transition-all">
+            <p class="font-mono text-[0.7rem] tracking-widest uppercase text-rqbi-ink-mute mb-1.5">Adresse</p>
+            <p class="text-sm font-medium text-rqbi-ink leading-snug whitespace-pre-line">{{ block.content.address }}</p>
           </div>
-          <div v-if="block.content.phone" class="flex gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <span class="text-rqbi-red text-xl shrink-0">📞</span>
-            <div>
-              <p class="font-semibold text-rqbi-dark text-sm mb-1">Téléphone</p>
-              <a :href="'tel:' + block.content.phone" class="text-rqbi-blue text-sm hover:underline">
-                {{ block.content.phone }}
-              </a>
-            </div>
+          <div v-if="block.content.phone" class="bg-white border border-rqbi-line rounded-xl p-5 hover:-translate-y-1 hover:border-rqbi-red transition-all">
+            <p class="font-mono text-[0.7rem] tracking-widest uppercase text-rqbi-ink-mute mb-1.5">Téléphone</p>
+            <a :href="'tel:' + (block.content.phone as string)" class="text-sm font-medium text-rqbi-blue hover:underline">{{ block.content.phone }}</a>
           </div>
-          <div v-if="block.content.email" class="flex gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <span class="text-rqbi-red text-xl shrink-0">✉️</span>
-            <div>
-              <p class="font-semibold text-rqbi-dark text-sm mb-1">Email</p>
-              <a :href="'mailto:' + block.content.email" class="text-rqbi-blue text-sm hover:underline break-all">
-                {{ block.content.email }}
-              </a>
-            </div>
+          <div v-if="block.content.email" class="bg-white border border-rqbi-line rounded-xl p-5 hover:-translate-y-1 hover:border-rqbi-red transition-all">
+            <p class="font-mono text-[0.7rem] tracking-widest uppercase text-rqbi-ink-mute mb-1.5">Email</p>
+            <a :href="'mailto:' + (block.content.email as string)" class="text-sm font-medium text-rqbi-blue hover:underline break-all">{{ block.content.email }}</a>
           </div>
-          <div v-if="block.content.hours" class="flex gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <span class="text-rqbi-red text-xl shrink-0">🕐</span>
-            <div>
-              <p class="font-semibold text-rqbi-dark text-sm mb-1">Horaires</p>
-              <p class="text-gray-600 text-sm whitespace-pre-line">{{ block.content.hours }}</p>
-            </div>
+          <div v-if="block.content.hours" class="bg-white border border-rqbi-line rounded-xl p-5 hover:-translate-y-1 hover:border-rqbi-red transition-all">
+            <p class="font-mono text-[0.7rem] tracking-widest uppercase text-rqbi-ink-mute mb-1.5">Horaires</p>
+            <p class="text-sm font-medium text-rqbi-ink whitespace-pre-line">{{ block.content.hours }}</p>
           </div>
         </div>
+
         <div
           v-if="block.content.show_map && block.content.lat && block.content.lon"
-          class="rounded-xl overflow-hidden shadow border border-gray-100"
+          class="rounded-2xl overflow-hidden border border-rqbi-line h-72"
         >
           <iframe
             title="Localisation"
-            width="100%"
-            height="260"
-            frameborder="0"
-            scrolling="no"
+            width="100%" height="100%" frameborder="0" scrolling="no"
             :src="mapUrl"
           />
         </div>
       </div>
 
-      <!-- Droite : formulaire -->
-      <div>
-        <div v-if="sent" class="bg-green-50 border border-green-200 rounded-xl p-6 text-center h-full flex flex-col items-center justify-center">
-          <p class="text-green-700 font-semibold text-lg mb-1">Message envoyé !</p>
-          <p class="text-green-600 text-sm">Nous vous répondrons dans les meilleurs délais.</p>
+      <!-- Formulaire -->
+      <div class="bg-white border border-rqbi-line rounded-2xl p-10 self-start" v-animate-in="{ delay: 1 }">
+        <div v-if="sent" class="text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-rqbi-red-soft text-rqbi-red mx-auto mb-6 flex items-center justify-center text-2xl">✓</div>
+          <h3 class="font-display text-2xl font-medium mb-2">Message envoyé !</h3>
+          <p class="text-rqbi-ink-mute">Nous vous répondrons dans les meilleurs délais.</p>
         </div>
+
         <form v-else class="space-y-4" @submit.prevent="submit">
+          <h3 class="font-display text-2xl font-medium mb-6">Envoyer un message</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1">Nom <span class="text-rqbi-red">*</span></label>
-              <input v-model="form.name" type="text" required class="field" />
+              <label class="form-label">Nom *</label>
+              <input v-model="form.name" type="text" required class="form-input" />
             </div>
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-1">Email <span class="text-rqbi-red">*</span></label>
-              <input v-model="form.email" type="email" required class="field" />
+              <label class="form-label">Email *</label>
+              <input v-model="form.email" type="email" required class="form-input" />
             </div>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Sujet <span class="text-rqbi-red">*</span></label>
-            <input v-model="form.subject" type="text" required class="field" />
+            <label class="form-label">Sujet *</label>
+            <input v-model="form.subject" type="text" required class="form-input" />
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">Message <span class="text-rqbi-red">*</span></label>
-            <textarea v-model="form.message" rows="5" required class="field resize-none" />
+            <label class="form-label">Message *</label>
+            <textarea v-model="form.message" required class="form-textarea" />
           </div>
-          <p v-if="error" class="text-red-500 text-sm">{{ error }}</p>
+          <p v-if="error" class="text-rqbi-red text-sm">{{ error }}</p>
           <button
             type="submit"
             :disabled="sending || isEditing"
-            class="bg-rqbi-red text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors disabled:opacity-50"
+            class="btn-primary w-full justify-center"
           >
             {{ sending ? 'Envoi en cours…' : 'Envoyer le message' }}
           </button>
         </form>
       </div>
-
     </div>
   </section>
 </template>
@@ -128,7 +110,3 @@ async function submit() {
   }
 }
 </script>
-
-<style scoped>
-.field { @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rqbi-blue/30 focus:border-rqbi-blue transition-colors; }
-</style>

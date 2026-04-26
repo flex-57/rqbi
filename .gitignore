@@ -1,4 +1,8 @@
 
+# Claude Code
+CLAUDE.md
+.claude/
+
 /node_modules/
 /.pnp
 .pnp.js
