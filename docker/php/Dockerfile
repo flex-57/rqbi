@@ -14,9 +14,10 @@ WORKDIR /var/www/html
 # ── Stage 2 : dev (+ Xdebug) ─────────────────────────────────────────────────
 FROM base AS dev
 
-RUN apk add --no-cache linux-headers \
+RUN apk add --no-cache linux-headers $PHPIZE_DEPS \
     && pecl install xdebug \
-    && docker-php-ext-enable xdebug
+    && docker-php-ext-enable xdebug \
+    && apk del $PHPIZE_DEPS
 
 COPY docker/php/conf.d/app.dev.ini /usr/local/etc/php/conf.d/app.dev.ini
 COPY docker/php/entrypoint.sh /entrypoint.sh
