@@ -4,6 +4,7 @@ CLAUDE.md
 .claude/
 
 /node_modules/
+/.env.docker
 /.pnp
 .pnp.js
 /public/uploads/

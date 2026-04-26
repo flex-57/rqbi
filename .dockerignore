@@ -1,0 +1,12 @@
+.git
+.claude/
+node_modules/
+vendor/
+var/
+public/uploads/
+public/build/
+config/jwt/
+vue-port/
+.env.local
+.env.*.local
+.env.docker
