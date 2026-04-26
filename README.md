@@ -11,7 +11,31 @@ CMS sur-mesure pour la **Régie de Quartier Behren Insertion** — association d
 | Base de données | MySQL 8 (dev/prod) · SQLite (tests) |
 | Tests | PHPUnit 12 — 53 tests unitaires + fonctionnels |
 
-## Démarrage rapide
+## Démarrage
+
+### Avec Docker (recommandé)
+
+```bash
+docker compose up --build
+```
+
+L'entrypoint installe les dépendances, génère les clés JWT et lance les migrations automatiquement.
+
+| Service | URL |
+|---------|-----|
+| Application | http://localhost:8000 |
+| Vite (hot-reload) | http://localhost:5173 |
+| Mailpit (mails dev) | http://localhost:8025 |
+| MySQL | localhost:3307 |
+
+```bash
+# Charger les fixtures (première fois)
+docker compose exec php php bin/console doctrine:fixtures:load
+```
+
+Voir [docs/docker.md](docs/docker.md) pour la documentation complète.
+
+### Sans Docker
 
 ```bash
 # Dépendances
