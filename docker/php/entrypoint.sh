@@ -3,7 +3,7 @@ set -e
 
 # En dev : installer les dépendances Composer (pas en prod, elles sont dans l'image)
 if [ "${APP_ENV:-dev}" = "dev" ]; then
-    composer install --no-interaction --prefer-dist
+    composer install --no-interaction --prefer-dist --no-scripts
 fi
 
 # Générer les clés JWT si absentes
