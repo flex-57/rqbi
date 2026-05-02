@@ -6,10 +6,10 @@ CMS sur-mesure pour la **Régie de Quartier Behren Insertion** — association d
 
 | Couche | Technologies |
 |--------|-------------|
-| Backend | Symfony 7.2 · PHP 8.3 · Doctrine ORM (STI) · JWT |
-| Frontend | Vue.js 3 · Vite 5 · TailwindCSS 3 · Pinia |
+| Backend | Symfony 7.4 · PHP 8.3 · Doctrine ORM (STI) · JWT |
+| Frontend | Vue.js 3.5 · Vite 5.4 · TailwindCSS 3.4 · Pinia 3 |
 | Base de données | MySQL 8 (dev/prod) · SQLite (tests) |
-| Tests | PHPUnit 12 — 53 tests unitaires + fonctionnels |
+| Tests | PHPUnit 12 · Vitest 2 |
 
 ## Démarrage
 
@@ -52,7 +52,7 @@ php bin/console doctrine:fixtures:load
 
 # Serveurs de développement
 symfony serve          # Backend — https://127.0.0.1:8000
-npm run dev            # Frontend Vite (Terminal séparé)
+npm run dev            # Frontend Vite (terminal séparé)
 ```
 
 Compte admin de test : `admin@rqbi.fr` / `admin`
@@ -62,20 +62,22 @@ Accès administration : `/login` (lien « Admin » discret en haut à droite)
 
 ```
 src/
-├── Controller/Api/     — API JSON pure (PageController, BlockController, ContactController)
+├── Controller/Api/     — API JSON pure (PageController, BlockController, AuthController, ContactController)
 ├── Entity/             — Page, Block (STI, 12 types), User
+├── Entity/Trait/       — Timestampable, Positionable, …
+├── Enum/               — BlockType
 ├── Factory/            — BlockFactory (seul point d'instanciation des blocs)
-├── Service/            — BlockManager (CRUD blocs + nettoyage uploads)
-└── Enum/               — BlockType
+├── Repository/         — PageRepository, BlockRepository
+└── Service/            — BlockManager (orchestration CRUD blocs + uploads)
 
-assets/
-├── app.ts              — Bootstrap Vue + directive v-animate-in
-├── styles/app.css      — Polices, palette RQBI, composants Tailwind
-└── vue/
-    ├── blocks/         — 12 composants bloc (Text, Image, Slider, Video, Cta, …)
-    ├── components/     — NavBar, PageView, BlockRenderer, BlockEditor, …
-    ├── stores/         — auth, pages, blocks (Pinia)
-    └── composables/    — api.ts (Axios + JWT), useCounter.ts
+assets/vue/
+├── blocks/             — 12 composants bloc (BlockText, BlockImage, BlockSlider, …)
+├── components/         — BlockRenderer, BlockEditor, PageEditor, NavBar, PageView, …
+├── stores/             — auth, pages, blocks (Pinia)
+└── composables/        — api.ts (Axios + JWT intercepteur)
+
+templates/
+└── base.html.twig      — unique template Twig, bootstrap Vue.js
 ```
 
 ## Types de blocs
@@ -85,12 +87,26 @@ assets/
 ## Tests
 
 ```bash
-php bin/phpunit                  # Suite complète (53 tests)
-php bin/phpunit tests/Unit/      # Unitaires uniquement
-php bin/phpunit tests/Functional # Fonctionnels uniquement
+# Suite PHP complète
+php bin/phpunit
+
+# Par catégorie
+php bin/phpunit tests/Unit/
+php bin/phpunit tests/Integration/
+php bin/phpunit tests/Functional/
+
+# Suite Vitest (composants Vue)
+npx vitest run
 ```
 
-La base SQLite de test est recréée automatiquement avant chaque run (`tests/bootstrap.php`).
+| Catégorie | Fichiers | Couverture |
+|-----------|----------|-----------|
+| Unitaires | `BlockFactoryTest`, `BlockManagerTest` | Factory STI, orchestration blocs |
+| Intégration | `BlockRepositoryTest`, `PageRepositoryTest` | Repository + SQLite, isolation par rollback |
+| Fonctionnels | `AuthControllerTest`, `PageControllerTest`, `BlockControllerTest`, `ContactControllerTest` | Endpoints API JSON |
+| Vitest | `BlockRenderer.test.ts`, `BlockEditor.test.ts` | Composants Vue (rendu, émits, validation) |
+
+La base SQLite de test est recréée automatiquement avant chaque run (`tests/bootstrap.php`). Les tests d'intégration utilisent un rollback DBAL par test pour garantir l'isolation.
 
 ## Upload d'images
 

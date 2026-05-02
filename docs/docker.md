@@ -13,7 +13,7 @@ Le projet utilise un **Dockerfile multi-stage** (`docker/php/Dockerfile`) et deu
 
 ```
 base        — PHP 8.3-FPM Alpine + extensions (pdo_mysql, gd, intl, zip, opcache)
-  └── dev         — + Xdebug 3
+  └── dev         — + Xdebug 3 (compilé via pecl + PHPIZE_DEPS)
 node-builder      — Node 20 Alpine → npm run build → public/build/
   └── prod        — base + vendor (composer --no-dev) + code + assets buildés
         └── nginx-prod — Nginx 1.27 + public/ copiée depuis prod
@@ -30,7 +30,7 @@ docker compose up --build
 ```
 
 L'entrypoint (`docker/php/entrypoint.sh`) exécute automatiquement :
-1. `composer install`
+1. `composer install --no-scripts` (compatible Windows NTFS)
 2. Génération des clés JWT (`config/jwt/private.pem` / `public.pem`)
 3. `doctrine:migrations:migrate`
 
@@ -71,11 +71,25 @@ docker compose exec php php bin/console app:create-admin
 # Lancer les tests PHPUnit
 docker compose exec php php bin/phpunit
 
+# Lancer les tests Vitest (depuis la machine hôte)
+npx vitest run
+
 # Arrêter et supprimer les containers
 docker compose down
 
 # Supprimer aussi les volumes (reset complet BDD)
 docker compose down -v
+```
+
+### Isolation du dossier var/
+
+Le dossier `var/` (cache, logs, sessions) est monté comme volume anonyme dans le container. Cela évite les conflits de permissions entre le système de fichiers Windows (NTFS) et le container Linux.
+
+```yaml
+# compose.yaml — extrait
+volumes:
+  - .:/var/www/html
+  - /var/www/html/var   # var/ isolé du bind-mount Windows
 ```
 
 ### Xdebug
@@ -153,7 +167,7 @@ L'entrypoint prod exécute automatiquement :
 
 ```bash
 # Rebuild les images avec le nouveau code
-docker compose -f docker-compose.prod.yml --env-file .env.local up -d --build
+docker compose -f compose.prod.yml --env-file .env.local up -d --build
 
 # Les migrations tournent automatiquement à chaque démarrage
 ```
