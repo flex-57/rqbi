@@ -19,7 +19,7 @@
             :class="form.type === t.value
               ? 'border-rqbi-blue bg-blue-50 text-rqbi-blue'
               : 'border-gray-200 hover:border-gray-300'"
-            @click="form.type = t.value; resetContent(); errors = {}"
+            @click="form.type = t.value; resetContent(); clearErrors()"
           >
             {{ typeIcon(t.value) }} {{ t.label }}
           </button>
@@ -405,7 +405,11 @@ const emit = defineEmits<{ close: [] }>()
 const blocksStore = useBlocksStore()
 const saving = ref(false)
 const isNew = !props.block
-let errors = reactive<Record<string, string>>({})
+const errors = reactive<Record<string, string>>({})
+
+function clearErrors() {
+  Object.keys(errors).forEach(k => delete errors[k])
+}
 
 const blockTypes = [
   { value: 'text',         label: 'Texte' },
@@ -483,7 +487,7 @@ function resetContent() {
 if (isNew) resetContent()
 
 function validate(): boolean {
-  errors = reactive({})
+  clearErrors()
   const c = form.content
 
   if (form.type === 'text') {

@@ -10,19 +10,20 @@ use App\Repository\BlockRepository;
 use App\Service\BlockManager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 class BlockManagerTest extends TestCase
 {
     private BlockFactory $factory;
-    private BlockRepository&MockObject $blockRepository;
+    private BlockRepository&Stub $blockRepository;
     private EntityManagerInterface&MockObject $em;
     private BlockManager $manager;
 
     protected function setUp(): void
     {
         $this->factory = new BlockFactory();
-        $this->blockRepository = $this->createMock(BlockRepository::class);
+        $this->blockRepository = $this->createStub(BlockRepository::class);
         $this->em = $this->createMock(EntityManagerInterface::class);
         $this->manager = new BlockManager($this->factory, $this->blockRepository, $this->em, '/tmp');
     }
@@ -46,8 +47,8 @@ class BlockManagerTest extends TestCase
     {
         $page = new Page();
         $this->blockRepository->method('findMaxPositionForPage')->willReturn(0);
-        $this->em->method('persist');
-        $this->em->method('flush');
+        $this->em->expects($this->once())->method('persist');
+        $this->em->expects($this->once())->method('flush');
 
         $block = $this->manager->createBlock($page, BlockType::TEXT);
 
