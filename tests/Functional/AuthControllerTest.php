@@ -217,6 +217,8 @@ class AuthControllerTest extends WebTestCase
             'new_password_confirmation' => 'short',
         ]);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
     }
 
     public function testChangePassword_MissingCurrentPassword_Returns422(): void
@@ -227,6 +229,20 @@ class AuthControllerTest extends WebTestCase
             'new_password_confirmation' => 'newpassword123',
         ]);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
+    }
+
+    public function testChangePassword_MissingNewPassword_Returns422(): void
+    {
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'current_password'          => 'admin',
+            'new_password_confirmation' => 'newpassword123',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
     }
 
     public function testChangePassword_Unauthenticated_Returns401(): void
