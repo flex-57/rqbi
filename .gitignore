@@ -3,6 +3,9 @@
 CLAUDE.md
 .claude/
 
+# Superpowers plans & specs (generated, not source)
+/docs/superpowers/
+
 /node_modules/
 /.env.docker
 /.pnp

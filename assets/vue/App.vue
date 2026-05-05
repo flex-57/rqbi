@@ -3,7 +3,7 @@
     <LoginForm />
   </template>
   <template v-else>
-    <NavBar :is-editing="isEditing" @toggle-editing="toggleEditing" />
+    <NavBar />
 
     <main class="min-h-[60vh]">
       <PageView :is-editing="isEditing" />
@@ -71,6 +71,14 @@
         </div>
       </div>
     </footer>
+
+    <div v-if="authStore.isAdmin" class="h-11" />
+
+    <AdminBar
+      v-if="authStore.isAdmin"
+      :is-editing="isEditing"
+      @toggle-editing="toggleEditing"
+    />
   </template>
 </template>
 
@@ -80,6 +88,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import { usePagesStore } from './stores/pages'
 import NavBar from './components/NavBar.vue'
+import AdminBar from './components/AdminBar.vue'
 import PageView from './components/PageView.vue'
 import LoginForm from './components/LoginForm.vue'
 

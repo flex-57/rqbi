@@ -48,6 +48,40 @@ class AuthController extends AbstractController
         ]);
     }
 
+    #[Route('/change-password', name: 'change_password', methods: ['POST'])]
+    public function changePassword(
+        #[CurrentUser] User $user,
+        Request $request,
+        UserPasswordHasherInterface $hasher,
+        EntityManagerInterface $em,
+    ): JsonResponse {
+        $payload = json_decode($request->getContent(), true) ?? [];
+        $current = $payload['current_password'] ?? '';
+        $new     = $payload['new_password'] ?? '';
+        $confirm = $payload['new_password_confirmation'] ?? '';
+
+        if ($current === '') {
+            return $this->json(['error' => 'Le mot de passe actuel est obligatoire'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        if ($new === '') {
+            return $this->json(['error' => 'Le nouveau mot de passe est obligatoire'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        if ($new !== $confirm) {
+            return $this->json(['error' => 'Les mots de passe ne correspondent pas'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        if (strlen($new) < 8) {
+            return $this->json(['error' => 'Le mot de passe doit contenir au moins 8 caractères'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        if (!$hasher->isPasswordValid($user, $current)) {
+            return $this->json(['error' => 'Mot de passe actuel incorrect'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user->setPassword($hasher->hashPassword($user, $new));
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
+
     #[Route('/setup', name: 'setup', methods: ['POST'])]
     public function setup(
         Request $request,
