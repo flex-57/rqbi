@@ -12,6 +12,7 @@ import BlockContact from './BlockContact.vue'
 import BlockFaq from './BlockFaq.vue'
 import BlockGallery from './BlockGallery.vue'
 import BlockMap from './BlockMap.vue'
+import BlockForm from './BlockForm.vue'
 
 const blockMap: Record<string, Component> = {
   text:         BlockText,
@@ -27,6 +28,7 @@ const blockMap: Record<string, Component> = {
   faq:          BlockFaq,
   gallery:      BlockGallery,
   map:          BlockMap,
+  form:         BlockForm,
 }
 
 export default blockMap
