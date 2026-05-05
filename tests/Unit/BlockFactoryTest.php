@@ -106,7 +106,7 @@ class BlockFactoryTest extends TestCase
     public function testCreate_MapType_ReturnsBlockMap(): void
     {
         $block = $this->factory->create(BlockType::MAP);
-        $this->assertInstanceOf(\App\Entity\BlockMap::class, $block);
+        $this->assertInstanceOf(BlockMap::class, $block);
         $this->assertSame(BlockType::MAP, $block->getType());
     }
 
