@@ -43,9 +43,9 @@ describe('BlockEditor', () => {
     expect(wrapper.text()).toContain('Modifier le bloc')
   })
 
-  it('shows type selector grid with 12 types when creating', () => {
+  it('shows type selector grid with 13 types when creating', () => {
     const { wrapper } = mountEditor(null)
-    expect(wrapper.findAll('.grid.grid-cols-3 button')).toHaveLength(12)
+    expect(wrapper.findAll('.grid.grid-cols-3 button')).toHaveLength(13)
   })
 
   it('does not show type selector when editing', () => {

@@ -6,10 +6,10 @@ use App\Enum\BlockType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class BlockContact extends Block
+class BlockMap extends Block
 {
     public function getType(): BlockType
     {
-        return BlockType::CONTACT;
+        return BlockType::MAP;
     }
 }

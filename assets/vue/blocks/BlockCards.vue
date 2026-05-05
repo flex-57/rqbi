@@ -5,10 +5,12 @@
         {{ block.content.title }}
       </h2>
       <div class="grid gap-5" :class="gridClass">
-        <div
+        <component
+          :is="card.link ? 'a' : 'div'"
           v-for="(card, i) in cards" :key="i"
           v-animate-in="'scale'"
           class="relative bg-white rounded-2xl border border-rqbi-line p-8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-rqbi-lg overflow-hidden group"
+          :href="card.link || undefined"
         >
           <span
             class="absolute top-0 left-0 right-0 h-[3px] origin-left scale-x-[0.3] group-hover:scale-x-100 transition-transform duration-500"
@@ -20,7 +22,7 @@
           </span>
           <h3 class="font-display text-2xl font-medium mb-2 text-rqbi-ink">{{ card.title }}</h3>
           <p class="text-rqbi-ink-mute text-sm leading-relaxed">{{ card.text }}</p>
-        </div>
+        </component>
       </div>
     </div>
   </section>

@@ -13,9 +13,10 @@ enum BlockType: string
     case STATS        = 'stats';
     case CARDS        = 'cards';
     case TIMELINE     = 'timeline';
-    case CONTACT      = 'contact';
     case FAQ          = 'faq';
     case GALLERY      = 'gallery';
+    case MAP          = 'map';
+    case FORM         = 'form';
 
     public function getClass(): string
     {
@@ -29,9 +30,10 @@ enum BlockType: string
             self::STATS        => \App\Entity\BlockStats::class,
             self::CARDS        => \App\Entity\BlockCards::class,
             self::TIMELINE     => \App\Entity\BlockTimeline::class,
-            self::CONTACT      => \App\Entity\BlockContact::class,
             self::FAQ          => \App\Entity\BlockFaq::class,
             self::GALLERY      => \App\Entity\BlockGallery::class,
+            self::MAP          => \App\Entity\BlockMap::class,
+            self::FORM         => \App\Entity\BlockForm::class,
         };
     }
 
@@ -47,9 +49,10 @@ enum BlockType: string
             self::STATS        => 'Chiffres clés',
             self::CARDS        => 'Cartes',
             self::TIMELINE     => 'Chronologie',
-            self::CONTACT      => 'Contact & formulaire',
             self::FAQ          => 'FAQ',
             self::GALLERY      => 'Galerie',
+            self::MAP          => 'Carte',
+            self::FORM         => 'Formulaire de contact',
         };
     }
 }

@@ -209,15 +209,26 @@ class AppFixtures extends Fixture
     {
         $page = $this->page($manager, 'Contact', 'contact');
 
-        $this->block($manager, $page, BlockType::CONTACT, 1, [
-            'title'    => 'Contactez-nous',
-            'address'  => "Annexe Chateaubriand\n1 rue de l'École\n57460 Behren-lès-Forbach",
-            'phone'    => '03 87 88 39 85',
-            'email'    => 'secretariat@rqbi.fr',
-            'hours'    => "Lun – Ven : 8h00 – 12h00\net 14h00 – 17h00",
-            'show_map' => true,
-            'lat'      => 49.1654,
-            'lon'      => 6.9427,
+        $this->block($manager, $page, BlockType::CARDS, 1, [
+            'columns' => 2,
+            'cards'   => [
+                ['icon' => '📍', 'title' => 'Adresse',   'text' => "Annexe Chateaubriand\n1 rue de l'École\n57460 Behren-lès-Forbach", 'accent' => 'red'],
+                ['icon' => '📞', 'title' => 'Téléphone', 'text' => '03 87 88 39 85', 'accent' => 'blue', 'link' => 'tel:0387883985'],
+                ['icon' => '✉️', 'title' => 'Email',      'text' => 'secretariat@rqbi.fr', 'accent' => 'red', 'link' => 'mailto:secretariat@rqbi.fr'],
+                ['icon' => '🕐', 'title' => 'Horaires',   'text' => "Lun – Ven : 8h00 – 12h00\net 14h00 – 17h00", 'accent' => 'blue'],
+            ],
+        ]);
+
+        $this->block($manager, $page, BlockType::MAP, 2, [
+            'title'  => 'Nous trouver',
+            'lat'    => 49.1654,
+            'lon'    => 6.9427,
+            'height' => 400,
+        ]);
+
+        $this->block($manager, $page, BlockType::FORM, 3, [
+            'title'        => 'Envoyer un message',
+            'submit_label' => 'Envoyer',
         ]);
     }
 
