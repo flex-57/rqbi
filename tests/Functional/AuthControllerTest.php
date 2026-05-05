@@ -180,6 +180,15 @@ class AuthControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $data = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue($data['success']);
+
+        // Verify persistence: new password must allow login
+        $this->client->request('POST', '/api/auth/login', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
+            'email'    => 'admin@rqbi.fr',
+            'password' => 'newpassword123',
+        ]));
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $loginData = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('token', $loginData);
     }
 
     public function testChangePassword_WrongCurrentPassword_Returns400(): void
