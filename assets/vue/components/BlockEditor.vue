@@ -259,6 +259,7 @@
               <input v-model="card.title" type="text" class="form-input" placeholder="Titre" />
             </div>
             <textarea v-model="card.text" rows="2" class="form-input resize-none" placeholder="Description" />
+            <input v-model="card.link" type="text" class="form-input" placeholder="Lien (optionnel, ex: tel:0387... ou mailto:...)" />
             <div class="flex gap-4">
               <label v-for="a in accentOptions" :key="a.value" class="flex items-center gap-1 text-sm cursor-pointer">
                 <input v-model="card.accent" type="radio" :value="a.value" />
@@ -549,7 +550,7 @@ function removeStat(i: number) {
 
 function addCard() {
   const cards = (form.content.cards as any[]) ?? []
-  form.content.cards = [...cards, { icon: '', title: '', text: '', accent: '' }]
+  form.content.cards = [...cards, { icon: '', title: '', text: '', accent: '', link: '' }]
 }
 function removeCard(i: number) {
   form.content.cards = (form.content.cards as any[]).filter((_, idx) => idx !== i)
