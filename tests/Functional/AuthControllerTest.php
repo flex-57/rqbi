@@ -159,4 +159,85 @@ class AuthControllerTest extends WebTestCase
         $data = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('error', $data);
     }
+
+    private function requestChangePassword(string $token, array $payload): void
+    {
+        $this->client->request('POST', '/api/auth/change-password', [], [], [
+            'CONTENT_TYPE'      => 'application/json',
+            'HTTP_AUTHORIZATION' => 'Bearer ' . $token,
+        ], json_encode($payload));
+    }
+
+    public function testChangePassword_WithValidData_Returns200(): void
+    {
+        $this->needsRestore = true;
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'current_password'          => 'admin',
+            'new_password'              => 'newpassword123',
+            'new_password_confirmation' => 'newpassword123',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertTrue($data['success']);
+    }
+
+    public function testChangePassword_WrongCurrentPassword_Returns400(): void
+    {
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'current_password'          => 'wrongpassword',
+            'new_password'              => 'newpassword123',
+            'new_password_confirmation' => 'newpassword123',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
+    }
+
+    public function testChangePassword_MismatchConfirmation_Returns422(): void
+    {
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'current_password'          => 'admin',
+            'new_password'              => 'newpassword123',
+            'new_password_confirmation' => 'differentpassword',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('error', $data);
+    }
+
+    public function testChangePassword_TooShortNewPassword_Returns422(): void
+    {
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'current_password'          => 'admin',
+            'new_password'              => 'short',
+            'new_password_confirmation' => 'short',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testChangePassword_MissingCurrentPassword_Returns422(): void
+    {
+        $token = $this->fetchToken();
+        $this->requestChangePassword($token, [
+            'new_password'              => 'newpassword123',
+            'new_password_confirmation' => 'newpassword123',
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testChangePassword_Unauthenticated_Returns401(): void
+    {
+        $this->client->request('POST', '/api/auth/change-password', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode([
+            'current_password'          => 'admin',
+            'new_password'              => 'newpassword123',
+            'new_password_confirmation' => 'newpassword123',
+        ]));
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
 }
