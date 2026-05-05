@@ -11,6 +11,7 @@ import BlockTimeline from './BlockTimeline.vue'
 import BlockContact from './BlockContact.vue'
 import BlockFaq from './BlockFaq.vue'
 import BlockGallery from './BlockGallery.vue'
+import BlockMap from './BlockMap.vue'
 
 const blockMap: Record<string, Component> = {
   text:         BlockText,
@@ -25,6 +26,7 @@ const blockMap: Record<string, Component> = {
   contact:      BlockContact,
   faq:          BlockFaq,
   gallery:      BlockGallery,
+  map:          BlockMap,
 }
 
 export default blockMap

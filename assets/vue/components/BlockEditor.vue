@@ -290,46 +290,39 @@
           <button class="btn-ghost text-sm w-full" @click="addEvent">+ Ajouter un événement</button>
         </template>
 
-        <!-- CONTACT -->
-        <template v-else-if="form.type === 'contact'">
+        <!-- MAP -->
+        <template v-else-if="form.type === 'map'">
           <div>
             <label class="form-label">Titre (optionnel)</label>
-            <input v-model="form.content.title" type="text" class="form-input" placeholder="Nous contacter" />
-          </div>
-          <div>
-            <label class="form-label">Adresse</label>
-            <textarea v-model="form.content.address" rows="2" class="form-input resize-none" placeholder="1 rue de l'École&#10;57460 Behren-lès-Forbach" />
+            <input v-model="form.content.title" type="text" class="form-input" placeholder="Nous trouver" />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="form-label">Téléphone</label>
-              <input v-model="form.content.phone" type="text" class="form-input" placeholder="03 87 88 39 85" />
+              <label class="form-label">Latitude <span class="text-red-500">*</span></label>
+              <input v-model="form.content.lat" type="text" class="form-input" placeholder="49.1654" />
             </div>
             <div>
-              <label class="form-label">Email</label>
-              <input v-model="form.content.email" type="email" class="form-input" placeholder="contact@rqbi.fr" />
+              <label class="form-label">Longitude <span class="text-red-500">*</span></label>
+              <input v-model="form.content.lon" type="text" class="form-input" placeholder="6.9427" />
             </div>
           </div>
           <div>
-            <label class="form-label">Horaires</label>
-            <textarea v-model="form.content.hours" rows="2" class="form-input resize-none" placeholder="Lun – Ven : 8h–12h et 13h–16h" />
+            <label class="form-label">Hauteur (px)</label>
+            <input v-model="form.content.height" type="number" class="form-input" placeholder="400" />
           </div>
-          <label class="flex items-center gap-2 text-sm">
-            <input v-model="form.content.show_map" type="checkbox" class="rounded" />
-            Afficher la carte
-          </label>
-          <template v-if="form.content.show_map">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="form-label">Latitude</label>
-                <input v-model="form.content.lat" type="text" class="form-input" placeholder="49.1654" />
-              </div>
-              <div>
-                <label class="form-label">Longitude</label>
-                <input v-model="form.content.lon" type="text" class="form-input" placeholder="6.9427" />
-              </div>
-            </div>
-          </template>
+        </template>
+
+        <!-- FORM -->
+        <template v-else-if="form.type === 'form'">
+          <div>
+            <label class="form-label">Titre</label>
+            <input v-model="form.content.title" type="text" class="form-input" placeholder="Envoyer un message" />
+          </div>
+          <div>
+            <label class="form-label">Texte du bouton</label>
+            <input v-model="form.content.submit_label" type="text" class="form-input" placeholder="Envoyer" />
+          </div>
+          <p class="text-sm text-gray-500">Les champs du formulaire (nom, email, sujet, message) sont fixes.</p>
         </template>
 
         <!-- FAQ -->
@@ -422,7 +415,8 @@ const blockTypes = [
   { value: 'stats',        label: 'Statistiques' },
   { value: 'cards',        label: 'Cartes' },
   { value: 'timeline',     label: 'Chronologie' },
-  { value: 'contact',      label: 'Contact & formulaire' },
+  { value: 'map',  label: 'Carte' },
+  { value: 'form', label: 'Formulaire de contact' },
   { value: 'faq',          label: 'FAQ' },
   { value: 'gallery',      label: 'Galerie' },
 ]
@@ -457,7 +451,7 @@ const accentOptions = [
 function typeIcon(type: string): string {
   const icons: Record<string, string> = {
     text: '📝', image: '🖼️', slider: '🎠', video: '🎬', cta: '📣', divider: '〰️',
-    stats: '📊', cards: '🗂️', timeline: '📅', contact: '📍', faq: '❓', gallery: '🖼️',
+    stats: '📊', cards: '🗂️', timeline: '📅', map: '🗺️', form: '✉️', faq: '❓', gallery: '🖼️',
   }
   return icons[type] ?? '📦'
 }
@@ -478,7 +472,8 @@ function resetContent() {
     stats:        { title: '', stats: [] },
     cards:        { title: '', columns: 3, cards: [] },
     timeline:     { title: '', events: [] },
-    contact:      { title: '', address: '', phone: '', email: '', hours: '', show_map: false, lat: '', lon: '' },
+    map:  { title: '', lat: '49.1654', lon: '6.9427', height: 400 },
+    form: { title: 'Envoyer un message', submit_label: 'Envoyer' },
     faq:          { title: 'Questions fréquentes', items: [] },
     gallery:      { title: '', columns: 3, items: [] },
   }
