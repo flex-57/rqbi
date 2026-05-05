@@ -8,7 +8,6 @@ import BlockDivider from './BlockDivider.vue'
 import BlockStats from './BlockStats.vue'
 import BlockCards from './BlockCards.vue'
 import BlockTimeline from './BlockTimeline.vue'
-import BlockContact from './BlockContact.vue'
 import BlockFaq from './BlockFaq.vue'
 import BlockGallery from './BlockGallery.vue'
 import BlockMap from './BlockMap.vue'
@@ -24,7 +23,6 @@ const blockMap: Record<string, Component> = {
   stats:        BlockStats,
   cards:        BlockCards,
   timeline:     BlockTimeline,
-  contact:      BlockContact,
   faq:          BlockFaq,
   gallery:      BlockGallery,
   map:          BlockMap,
