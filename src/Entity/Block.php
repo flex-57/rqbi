@@ -21,6 +21,7 @@ use App\Entity\BlockTimeline;
 use App\Entity\BlockContact;
 use App\Entity\BlockFaq;
 use App\Entity\BlockGallery;
+use App\Entity\BlockMap;
 
 #[ORM\Entity(repositoryClass: BlockRepository::class)]
 #[ORM\Table(name: 'block')]
@@ -39,6 +40,7 @@ use App\Entity\BlockGallery;
     'contact'      => BlockContact::class,
     'faq'          => BlockFaq::class,
     'gallery'      => BlockGallery::class,
+    'map'          => BlockMap::class,
 ])]
 #[ORM\HasLifecycleCallbacks]
 abstract class Block

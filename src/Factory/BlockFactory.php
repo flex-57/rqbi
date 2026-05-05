@@ -10,6 +10,7 @@ use App\Entity\BlockDivider;
 use App\Entity\BlockFaq;
 use App\Entity\BlockGallery;
 use App\Entity\BlockImage;
+use App\Entity\BlockMap;
 use App\Entity\BlockSlider;
 use App\Entity\BlockStats;
 use App\Entity\BlockText;
@@ -34,6 +35,7 @@ class BlockFactory
             BlockType::CONTACT      => new BlockContact(),
             BlockType::FAQ          => new BlockFaq(),
             BlockType::GALLERY      => new BlockGallery(),
+            BlockType::MAP          => new BlockMap(),
         };
     }
 

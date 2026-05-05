@@ -16,6 +16,7 @@ enum BlockType: string
     case CONTACT      = 'contact';
     case FAQ          = 'faq';
     case GALLERY      = 'gallery';
+    case MAP          = 'map';
 
     public function getClass(): string
     {
@@ -32,6 +33,7 @@ enum BlockType: string
             self::CONTACT      => \App\Entity\BlockContact::class,
             self::FAQ          => \App\Entity\BlockFaq::class,
             self::GALLERY      => \App\Entity\BlockGallery::class,
+            self::MAP          => \App\Entity\BlockMap::class,
         };
     }
 
@@ -50,6 +52,7 @@ enum BlockType: string
             self::CONTACT      => 'Contact & formulaire',
             self::FAQ          => 'FAQ',
             self::GALLERY      => 'Galerie',
+            self::MAP          => 'Carte',
         };
     }
 }

@@ -9,6 +9,7 @@ use App\Entity\BlockDivider;
 use App\Entity\BlockFaq;
 use App\Entity\BlockGallery;
 use App\Entity\BlockImage;
+use App\Entity\BlockMap;
 use App\Entity\BlockSlider;
 use App\Entity\BlockStats;
 use App\Entity\BlockText;
@@ -100,6 +101,13 @@ class BlockFactoryTest extends TestCase
     {
         $block = $this->factory->create(BlockType::GALLERY);
         $this->assertInstanceOf(BlockGallery::class, $block);
+    }
+
+    public function testCreate_MapType_ReturnsBlockMap(): void
+    {
+        $block = $this->factory->create(BlockType::MAP);
+        $this->assertInstanceOf(\App\Entity\BlockMap::class, $block);
+        $this->assertSame(BlockType::MAP, $block->getType());
     }
 
     public function testCreateFromString_ValidType_ReturnsCorrectBlock(): void
