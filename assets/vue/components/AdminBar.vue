@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { usePagesStore } from '../stores/pages'
@@ -94,12 +94,21 @@ const authStore = useAuthStore()
 const pagesStore = usePagesStore()
 const router = useRouter()
 
+const pageMenuRef = ref<HTMLElement | null>(null)
 const pageMenuOpen = ref(false)
 const pageEditorOpen = ref(false)
 const pageToEdit = ref<Page | null>(null)
 const newPageParentId = ref<number | null>(null)
 const confirmDelete = ref(false)
 const changePasswordOpen = ref(false)
+
+function onClickOutside(e: MouseEvent) {
+  if (pageMenuRef.value && !pageMenuRef.value.contains(e.target as Node)) {
+    pageMenuOpen.value = false
+  }
+}
+onMounted(() => document.addEventListener('mousedown', onClickOutside))
+onUnmounted(() => document.removeEventListener('mousedown', onClickOutside))
 
 function openPageEditor(parentId: number | null) {
   pageToEdit.value = null
@@ -121,6 +130,6 @@ async function doDeletePage() {
   if (!pagesStore.currentPage) return
   confirmDelete.value = false
   await pagesStore.deletePage(pagesStore.currentPage.id)
-  router.push('/accueil')
+  await router.push('/accueil')
 }
 </script>

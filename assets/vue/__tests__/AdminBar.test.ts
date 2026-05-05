@@ -40,7 +40,8 @@ describe('AdminBar', () => {
 
   it('edit button emits toggleEditing', async () => {
     const { wrapper } = mountBar(false)
-    await wrapper.find('button').trigger('click')
+    const editBtn = wrapper.findAll('button').find(b => b.text().includes('Éditer'))!
+    await editBtn.trigger('click')
     expect(wrapper.emitted('toggleEditing')).toHaveLength(1)
   })
 
