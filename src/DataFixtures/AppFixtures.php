@@ -207,18 +207,7 @@ class AppFixtures extends Fixture
 
     private function loadContact(ObjectManager $manager): void
     {
-        $page = $this->page($manager, 'Contact', 'contact');
-
-        $this->block($manager, $page, BlockType::CONTACT, 1, [
-            'title'    => 'Contactez-nous',
-            'address'  => "Annexe Chateaubriand\n1 rue de l'École\n57460 Behren-lès-Forbach",
-            'phone'    => '03 87 88 39 85',
-            'email'    => 'secretariat@rqbi.fr',
-            'hours'    => "Lun – Ven : 8h00 – 12h00\net 14h00 – 17h00",
-            'show_map' => true,
-            'lat'      => 49.1654,
-            'lon'      => 6.9427,
-        ]);
+        $this->page($manager, 'Contact', 'contact');
     }
 
     private function loadGallery(ObjectManager $manager): void
