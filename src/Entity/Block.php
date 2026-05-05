@@ -18,7 +18,6 @@ use App\Entity\BlockDivider;
 use App\Entity\BlockStats;
 use App\Entity\BlockCards;
 use App\Entity\BlockTimeline;
-use App\Entity\BlockContact;
 use App\Entity\BlockFaq;
 use App\Entity\BlockGallery;
 use App\Entity\BlockForm;
@@ -38,7 +37,6 @@ use App\Entity\BlockMap;
     'stats'        => BlockStats::class,
     'cards'        => BlockCards::class,
     'timeline'     => BlockTimeline::class,
-    'contact'      => BlockContact::class,
     'faq'          => BlockFaq::class,
     'gallery'      => BlockGallery::class,
     'map'          => BlockMap::class,

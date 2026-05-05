@@ -4,7 +4,6 @@ namespace App\Factory;
 
 use App\Entity\Block;
 use App\Entity\BlockCards;
-use App\Entity\BlockContact;
 use App\Entity\BlockCta;
 use App\Entity\BlockDivider;
 use App\Entity\BlockFaq;
@@ -33,7 +32,6 @@ class BlockFactory
             BlockType::STATS        => new BlockStats(),
             BlockType::CARDS        => new BlockCards(),
             BlockType::TIMELINE     => new BlockTimeline(),
-            BlockType::CONTACT      => new BlockContact(),
             BlockType::FAQ          => new BlockFaq(),
             BlockType::GALLERY      => new BlockGallery(),
             BlockType::MAP          => new BlockMap(),

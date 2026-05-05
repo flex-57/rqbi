@@ -3,7 +3,6 @@
 namespace App\Tests\Unit;
 
 use App\Entity\BlockCards;
-use App\Entity\BlockContact;
 use App\Entity\BlockCta;
 use App\Entity\BlockDivider;
 use App\Entity\BlockFaq;
@@ -84,12 +83,6 @@ class BlockFactoryTest extends TestCase
     {
         $block = $this->factory->create(BlockType::TIMELINE);
         $this->assertInstanceOf(BlockTimeline::class, $block);
-    }
-
-    public function testCreate_ContactType_ReturnsBlockContact(): void
-    {
-        $block = $this->factory->create(BlockType::CONTACT);
-        $this->assertInstanceOf(BlockContact::class, $block);
     }
 
     public function testCreate_FaqType_ReturnsBlockFaq(): void
