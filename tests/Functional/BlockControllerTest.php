@@ -47,9 +47,9 @@ class BlockControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $data = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($data);
-        $this->assertCount(12, $data);
+        $this->assertCount(13, $data);
         $values = array_column($data, 'value');
-        foreach (['text', 'image', 'slider', 'video', 'cta', 'divider', 'stats', 'cards', 'timeline', 'contact', 'faq', 'gallery'] as $type) {
+        foreach (['text', 'image', 'slider', 'video', 'cta', 'divider', 'stats', 'cards', 'timeline', 'map', 'form', 'faq', 'gallery'] as $type) {
             $this->assertContains($type, $values, "Type '$type' absent de la liste");
         }
     }
