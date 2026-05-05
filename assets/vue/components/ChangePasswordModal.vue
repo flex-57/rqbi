@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import api from '../composables/api'
 
 const emit = defineEmits<{ close: [] }>()
@@ -68,6 +68,9 @@ const form = ref({ current_password: '', new_password: '', new_password_confirma
 const error = ref('')
 const loading = ref(false)
 const success = ref(false)
+let closeTimer: ReturnType<typeof setTimeout> | null = null
+
+onUnmounted(() => { if (closeTimer) clearTimeout(closeTimer) })
 
 async function submit() {
   error.value = ''
@@ -93,7 +96,7 @@ async function submit() {
   try {
     await api.post('/api/auth/change-password', form.value)
     success.value = true
-    setTimeout(() => emit('close'), 1500)
+    closeTimer = setTimeout(() => emit('close'), 1500)
   } catch (e: any) {
     error.value = e.response?.data?.error ?? 'Une erreur est survenue'
   } finally {

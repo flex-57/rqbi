@@ -28,6 +28,24 @@ describe('ChangePasswordModal', () => {
     expect(wrapper.emitted('close')).toHaveLength(1)
   })
 
+  it('shows error when current password is empty', async () => {
+    const wrapper = mountModal()
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.text()).toContain('Le mot de passe actuel est obligatoire')
+    expect(api.post).not.toHaveBeenCalled()
+  })
+
+  it('shows error when new password is empty', async () => {
+    const wrapper = mountModal()
+    const inputs = wrapper.findAll('input[type="password"]')
+    await inputs[0].setValue('adminpass')
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.text()).toContain('Le nouveau mot de passe est obligatoire')
+    expect(api.post).not.toHaveBeenCalled()
+  })
+
   it('shows error when new password is too short', async () => {
     const wrapper = mountModal()
     const inputs = wrapper.findAll('input[type="password"]')
