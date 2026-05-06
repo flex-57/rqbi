@@ -3,7 +3,7 @@
     <LoginForm />
   </template>
   <template v-else>
-    <NavBar />
+    <NavBar :is-editing="isEditing" />
 
     <main class="min-h-[60vh]">
       <PageView :is-editing="isEditing" />

@@ -16,7 +16,7 @@
 
       <!-- Navigation principale -->
       <nav class="hidden lg:flex items-center gap-1 flex-1 justify-center">
-        <template v-for="page in pagesStore.tree" :key="page.id">
+        <template v-for="page in visiblePages" :key="page.id">
           <div class="relative group">
             <RouterLink
               :to="'/' + page.slug"
@@ -24,6 +24,7 @@
               active-class="!text-rqbi-red after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-rqbi-red"
             >
               {{ page.title }}
+              <span v-if="props.isEditing && !page.published" class="text-[0.65em] opacity-50 ml-0.5">(brouillon)</span>
               <span v-if="page.children?.length" class="ml-1 text-[0.7em] opacity-60">▾</span>
             </RouterLink>
             <div
@@ -67,7 +68,7 @@
 
     <!-- Menu mobile -->
     <div v-if="mobileOpen" class="lg:hidden border-t border-rqbi-line bg-white px-6 py-4">
-      <template v-for="page in pagesStore.tree" :key="page.id">
+      <template v-for="page in visiblePages" :key="page.id">
         <RouterLink
           :to="'/' + page.slug"
           class="block py-3 text-base font-medium text-rqbi-ink hover:text-rqbi-red border-b border-rqbi-line-soft"
@@ -88,12 +89,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { usePagesStore } from '../stores/pages'
 
+const props = defineProps<{ isEditing?: boolean }>()
+
 const authStore = useAuthStore()
 const pagesStore = usePagesStore()
+
+const visiblePages = computed(() =>
+  props.isEditing
+    ? pagesStore.tree
+    : pagesStore.tree.filter(p => p.published)
+)
 
 const scrolled = ref(false)
 const mobileOpen = ref(false)
