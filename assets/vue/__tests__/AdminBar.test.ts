@@ -4,9 +4,10 @@ import { createTestingPinia } from '@pinia/testing'
 import AdminBar from '../components/AdminBar.vue'
 import { useAuthStore } from '../stores/auth'
 
-const PageEditorStub = { template: '<div class="page-editor-stub" />', props: ['page', 'parentId'] }
-const ConfirmDialogStub = { template: '<div />', props: ['title', 'message'] }
+const PageEditorStub        = { template: '<div class="page-editor-stub" />',      props: ['page', 'parentId'] }
+const ConfirmDialogStub     = { template: '<div />',                                props: ['title', 'message'] }
 const ChangePasswordModalStub = { template: '<div class="change-password-stub" />' }
+const PagesManagerModalStub   = { template: '<div class="pages-manager-stub" />' }
 
 const mountBar = (isEditing = false) => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
@@ -15,9 +16,10 @@ const mountBar = (isEditing = false) => {
     global: {
       plugins: [pinia],
       stubs: {
-        PageEditor: PageEditorStub,
-        ConfirmDialog: ConfirmDialogStub,
+        PageEditor:          PageEditorStub,
+        ConfirmDialog:       ConfirmDialogStub,
         ChangePasswordModal: ChangePasswordModalStub,
+        PagesManagerModal:   PagesManagerModalStub,
       },
     },
   })
@@ -45,14 +47,16 @@ describe('AdminBar', () => {
     expect(wrapper.emitted('toggleEditing')).toHaveLength(1)
   })
 
-  it('does not show Pages button when not editing', () => {
+  it('does not show Pages ▾ dropdown when not editing', () => {
     const { wrapper } = mountBar(false)
-    expect(wrapper.text()).not.toContain('Pages')
+    const dropdownBtn = wrapper.findAll('button').find(b => b.text().includes('▾'))
+    expect(dropdownBtn).toBeUndefined()
   })
 
-  it('shows Pages button when editing', () => {
+  it('shows Pages ▾ dropdown when editing', () => {
     const { wrapper } = mountBar(true)
-    expect(wrapper.text()).toContain('Pages')
+    const dropdownBtn = wrapper.findAll('button').find(b => b.text().includes('▾'))
+    expect(dropdownBtn).toBeDefined()
   })
 
   it('shows change password button', () => {
@@ -78,5 +82,19 @@ describe('AdminBar', () => {
     const pwdBtn = wrapper.findAll('button').find(b => b.text().includes('Mot de passe'))!
     await pwdBtn.trigger('click')
     expect(wrapper.find('.change-password-stub').exists()).toBe(true)
+  })
+
+  it('shows ☰ Pages manager button even when not editing', () => {
+    const { wrapper } = mountBar(false)
+    const mgrBtn = wrapper.findAll('button').find(b => b.text().includes('☰'))
+    expect(mgrBtn).toBeDefined()
+  })
+
+  it('☰ Pages button opens PagesManagerModal', async () => {
+    const { wrapper } = mountBar(false)
+    expect(wrapper.find('.pages-manager-stub').exists()).toBe(false)
+    const mgrBtn = wrapper.findAll('button').find(b => b.text().includes('☰'))!
+    await mgrBtn.trigger('click')
+    expect(wrapper.find('.pages-manager-stub').exists()).toBe(true)
   })
 })

@@ -46,6 +46,11 @@
 
     <button
       class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs font-medium shrink-0"
+      @click="pagesManagerOpen = true"
+    >☰ Pages</button>
+
+    <button
+      class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs font-medium shrink-0"
       @click="changePasswordOpen = true"
     >🔑 Mot de passe</button>
 
@@ -75,6 +80,11 @@
     v-if="changePasswordOpen"
     @close="changePasswordOpen = false"
   />
+
+  <PagesManagerModal
+    v-if="pagesManagerOpen"
+    @close="pagesManagerOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -86,6 +96,7 @@ import type { Page } from '../stores/pages'
 import PageEditor from './PageEditor.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
 import ChangePasswordModal from './ChangePasswordModal.vue'
+import PagesManagerModal from './PagesManagerModal.vue'
 
 defineProps<{ isEditing: boolean }>()
 defineEmits<{ toggleEditing: [] }>()
@@ -101,6 +112,7 @@ const pageToEdit = ref<Page | null>(null)
 const newPageParentId = ref<number | null>(null)
 const confirmDelete = ref(false)
 const changePasswordOpen = ref(false)
+const pagesManagerOpen = ref(false)
 
 function onClickOutside(e: MouseEvent) {
   if (pageMenuRef.value && !pageMenuRef.value.contains(e.target as Node)) {
